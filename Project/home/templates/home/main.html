@@ -6,7 +6,50 @@
     <link rel="stylesheet" type="text/css" href="{% static 'home/styles.css' %}">
 </head>
 <body>
-    <h1>Hello there guys again again!</h1>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Profile</a></li>
+                <li><a href="#">Friends</a></li>
+                <li><a href="#">Messages</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <section class="post">
+            <div class="post-header">
+                <img src="{% static 'home/profile_picture.jpg' %}" alt="Profile Picture">
+                <h2>John Doe</h2>
+            </div>
+            <div class="post-content">
+                <p>This is my first post on the knock-off Facebook site!</p>
+            </div>
+            <div class="post-footer">
+                <button>Like</button>
+                <button>Commen</button>
+                <button>Share</button>
+            </div>
+        </section>
+        
+        <section class="post">
+            <div class="post-header">
+                <img src="{% static 'home/img/man.jpg' %}" alt="Profile Picture">
+                <h2>Jane Smith</h2>
+            </div>
+            <div class="post-content">
+                <p>Just had a great day at the beach!</p>
+                <img src="{% static 'home/img/woman.jpg' %}" alt="Beach Photo">
+            </div>
+            <div class="post-footer">
+                <button>Like</button>
+                <button>Comment</button>
+                <button>Share</button>
+            </div>
+        </section>
+    </main>
+    
     <script src="{% static 'home/script.js' %}"></script>
 </body>
 </html>
