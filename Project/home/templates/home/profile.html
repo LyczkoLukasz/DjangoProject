@@ -1,25 +1,47 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
+    <title>My View</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Website</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'home/style_profile.css' %}">
 </head>
 <body>
-    <header>
-        <h1>Profile</h1>
-    </header>
+    <banner>
+        <div class="logo">
+            <img src="{% static 'home/img/monkee.jpg' %}" alt="logo" style="width: 113px; height: 40px;">
+        </div>
+        <div class="search">
 
-    <main>
-        <section>
-            <h2>About</h2>
-            <p>This is a simple website for demonstration purposes.</p>
-        </section>
-    </main>
+        </div>
+        <div class="main_page">
 
-    <footer>
-        <p>Copyright &copy; 2022. All rights reserved.</p>
-    </footer>
+        </div>
+        <div class="friends_list">
+
+        </div>
+        <div class="notification">
+
+        </div>
+        <div class="account">
+
+        </div>
+    </banner>
+    <user_page>
+        <div class="user_profile"></div>
+            <div class="profile_picture">
+                <img src="{% static 'home/img/man.jpg' %}" alt="Profile Picture">
+            </div>
+            <div class="profile_info">
+                <h1>John Doe</h1>
+                <p>Email: john.doe@example.com</p>
+                <p>Location: New York, USA</p>
+                <p>Interests: Programming, Photography, Traveling</p>
+            </div>
+        </div>
+    </user_page>
+
+    <script src="{% static 'home/script.js' %}"></script>
 </body>
 </html>
