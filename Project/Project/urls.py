@@ -20,7 +20,7 @@ from django.views.generic.base import RedirectView
 
 
 urlpatterns = [
+    #subdomains are defined here, check home/urls.py for more info
     path('admin/', admin.site.urls),
-    path('home/', include('home.urls')),
-    path('', RedirectView.as_view(url='home/')),
+    path('', include('home.urls')),
 ]
