@@ -34,10 +34,10 @@
                 <img src="{% static 'home/img/man.jpg' %}" alt="Profile Picture">
             </div>
             <div class="profile_info">
-                <h1>John Doe</h1>
-                <p>Email: john.doe@example.com</p>
-                <p>Location: New York, USA</p>
-                <p>Interests: Programming, Photography, Traveling</p>
+                <h1>{{customer.name}} {{customer.surname}}</h1>
+                <p>Date of birth: {{customer.date_of_birth}}</p>
+                <p>Email: {{customer.email}}</p>
+                <p>Account created: {{customer.date_created}}</p>
             </div>
         </div>
     </user_page>
