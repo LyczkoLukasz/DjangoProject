@@ -5,6 +5,7 @@ from django.contrib.auth.hashers import make_password
 
 class User(AbstractUser):
     name = models.CharField(max_length=200, null=True)
+    date_of_birth = models.DateField(null=True)
     email = models.EmailField(unique=True, null=True)
     bio = models.TextField(null=True)
 

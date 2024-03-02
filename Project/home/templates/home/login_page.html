@@ -1,14 +1,15 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
     <title>Login Page</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href='C:\Users\ComPP\Desktop\projekty\Project\DjangoProject\Project\home\static\home\style_login.css'>
+    <link rel="stylesheet" type="text/css" href="{% static 'home/style_login.css' %}">
 </head>
 <body>
     <div class="logo">
-        <img src='C:\Users\ComPP\Desktop\projekty\Project\DjangoProject\Project\home\static\home\img\monkee.jpg' alt="logo">
+        <img src="{% static 'home/img/monkee.jpg' %}" alt="logo">
     </div>
     <h1 id="credentials" >Sign in</h1>
     <form id="credentials" action="" method="POST">
