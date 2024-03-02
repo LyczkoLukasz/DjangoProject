@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'home/style_login.css' %}">
+</head>
+<body>
+    <div class="logo">
+        <img src="{% static 'home/img/monkee.jpg' %}" alt="logo">
+    </div>
+    <h1 id="credentials" >Sign in</h1>
+    <form id="credentials" action="" method="POST">
+        {% csrf_token %}
+        <label for="username">E-mail:</label>
+        <br>
+        <input type="text" id="email" name="email" placeholder="e-mail" required>
+        <br><br>
+        <label for="password">Password:</label>
+        <br>
+        <input type="password" id="password" name="password" placeholder="password" required>
+        <br><br>
+        <input type="submit" value="Sign in">
+    </form>
+    <p>Not signed up yet?</p>
+    <a href="{% url 'register' %}">Sign up</a>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</body>
+</html>

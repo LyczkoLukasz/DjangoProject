@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'home/style_signup.css' %}">
+</head>
+<body>
+    <div class="logo">
+        <img src="{% static 'home/img/monkee.jpg' %}" alt="logo">
+    </div>
+    <div id="box">
+        <h1 id="header1" >Sign up</h1>
+        <form id="credentials" action="" method="POST">
+            {% csrf_token %}
+            <label class="label1" for="username">Username:</label>
+            <br>
+            <input class="input1" type="text" id="username" name="username" placeholder="username" required>
+            <br><br>
+            <label class="label1" for="username">E-mail:</label>
+            <br>
+            <input class="input1" type="text" id="email" name="email" placeholder="e-mail" required>
+            <br><br>
+            <label class="label1" for="password">Password:</label>
+            <br>
+            <input class="input1" type="password" id="password1" name="password1" placeholder="password" required>
+            <br><br>
+            <label class="label1" for="password">Confirm password:</label>
+            <br>
+            <input class="input1" type="password" id="password2" name="password2" placeholder="same password again" required>
+            <div id="message"><br></div>
+            <input class="submit1" type="submit" value="Sign up">
+        </form>
+        
+    </div>
+    <p>Already signed up?</p>
+    <a href="{% url 'login' %}">Sign in</a>
+    
+    <script src="{% static 'home/script.js' %}"></script>
+</body>
+</html>
