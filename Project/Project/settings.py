@@ -79,9 +79,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'railway',
         'USER': 'postgres',
-        'PASSWORD': 'F4-AA-ggeeA6ECdGAFf5Eb3341d4d316',
+        'PASSWORD': 'Ac4e41ea*461dcCd-bed*d1-cg2112*c',
         'HOST': 'monorail.proxy.rlwy.net',
-        'PORT': '14193',
+        'PORT': '39293',
     }
 }
 
@@ -126,3 +126,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'home.User'

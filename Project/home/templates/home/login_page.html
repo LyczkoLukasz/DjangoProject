@@ -12,6 +12,7 @@
     </div>
     <h1 id="credentials" >Sign in</h1>
     <form id="credentials" action="" method="POST">
+        {% csrf_token %}
         <label for="username">E-mail:</label>
         <br>
         <input type="text" id="email" name="email" placeholder="e-mail" required>
@@ -22,5 +23,12 @@
         <br><br>
         <input type="submit" value="Sign in">
     </form>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
 </body>
 </html>
