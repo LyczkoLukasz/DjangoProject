@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import User
 from django.contrib import messages
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, decorators
 from django.contrib.auth import login, logout
 
 
@@ -28,11 +28,14 @@ def LoginPage(request):
     return render(request, 'home/login_page.html', context)
 
     
-
+def logoutUser(request):
+    logout(request)
+    return redirect('home')
 
 def home(request):
     return render(request, 'home/main.html')
 
+@decorators.login_required(login_url='login')
 def profile(request, pk):
     user = User.objects.get(id=pk)
     context = {'user': user}
