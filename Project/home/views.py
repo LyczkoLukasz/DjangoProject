@@ -34,7 +34,7 @@ def home(request):
     return render(request, 'home/main.html')
 
 def profile(request, pk):
-    user = user.objects.get(id=pk)
+    user = User.objects.get(id=pk)
     context = {'user': user}
     return render(request, 'home/profile.html', context)
 
