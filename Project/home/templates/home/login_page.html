@@ -24,6 +24,8 @@
         <br><br>
         <input type="submit" value="Sign in">
     </form>
+    <p>Not signed up yet?</p>
+    <a href="{% url 'register' %}">Sign up</a>
     {% if messages %}
     <ul class="messages">
         {% for message in messages %}
