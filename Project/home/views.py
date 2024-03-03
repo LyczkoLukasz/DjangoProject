@@ -33,7 +33,7 @@ def logoutUser(request):
     return redirect('home')
 
 def home(request):
-    return render(request, 'home/main.html')
+    return render(request, 'home/home.html')
 
 @decorators.login_required(login_url='login')
 def profile(request, pk):
