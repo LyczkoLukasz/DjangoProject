@@ -1,10 +1,10 @@
-.logo {
+#logo {
     width: 100%;
     max-width: 700px;
     margin: 0 auto;
 }
 
-.logo img {
+#logo img {
     width: 100%;
     max-width: 700px;
     height: auto;

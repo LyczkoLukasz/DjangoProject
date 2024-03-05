@@ -13,11 +13,11 @@
     {% endblock %}
     
     <user_page>
-        <div class="user_profile"></div>
-            <div class="profile_picture">
+        <div id="user_profile"></div>
+            <div id="profile_picture">
                 <img src="{% static 'home/img/man.jpg' %}" alt="Profile Picture">
             </div>
-            <div class="profile_info">
+            <div id="profile_info">
                 <h1>{{user.name}} {{user.surname}}</h1>
                 <p>Date of birth: {{user.date_of_birth}}</p>
                 <p>Email: {{user.email}}</p>

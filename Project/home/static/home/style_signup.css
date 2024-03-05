@@ -2,20 +2,20 @@ body {
     background-color: #f0f2f5;
 }
 
-.logo {
+#logo {
     width: 100%;
     max-width: 700px;
     margin: 0 auto;
 }
 
-.logo img {
+#logo img {
     width: 100%;
     max-width: 700px;
     height: auto;
     margin: 0 auto;
 }
 
-.input1 {
+#input1 {
     width: 250px;
     height: 30px;
     border-radius: 5px;
@@ -23,7 +23,7 @@ body {
     margin-top: 0px;
 }
 
-.input1:focus {
+#input1:focus {
     outline: none;
     border: 1px solid #0866ff;
 }
@@ -49,11 +49,11 @@ body {
     text-align: center;
 }
 
-.label1 {
+#label1 {
     font-weight: 600;
 }
 
-.submit1 {
+#submit1 {
     width: 256px;
     height: 50px;
     font-size: 20px;

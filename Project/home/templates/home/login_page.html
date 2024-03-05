@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'home/style_login.css' %}">
 </head>
 <body>
-    <div class="logo">
+    <div id="logo">
         <img src="{% static 'home/img/monkee.jpg' %}" alt="logo">
     </div>
     <h1 id="credentials" >Sign in</h1>
@@ -27,7 +27,7 @@
     <p>Not signed up yet?</p>
     <a href="{% url 'register' %}">Sign up</a>
     {% if messages %}
-    <ul class="messages">
+    <ul id="messages">
         {% for message in messages %}
         <li>{{ message }}</li>
         {% endfor %}
