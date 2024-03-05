@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My View</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'home/style_profile.css' %}">
+</head>
+<body>
+    {% block template %}
+    {% include 'home/base/banner.html' %}
+    {% endblock %}
+    
+    <user_page>
+        <div id="user_profile"></div>
+            <div id="profile_picture">
+                <img src="{% static 'home/img/man.jpg' %}" alt="Profile Picture">
+            </div>
+            <div id="profile_info">
+                <h1>{{user.first_name}} {{user.last_name}}</h1>
+                <h5>{{user.bio}}</h5>
+                <p>Date of birth: {{user.date_of_birth}}</p>
+                <p>Email: {{user.email}}</p>
+                <p>Account created: {{user.date_joined}}</p>
+            </div>
+        </div>
+    </user_page>
+    <form id="user_data" action="" method="POST">
+        {% csrf_token %}
+        <input class="input1" type="text" id="first_name" name="first_name" value="{{user.first_name}}" placeholder="first name" required>
+        <br><br>
+        <input class="input1" type="text" id="last_name" name="last_name" value="{{user.last_name}}" placeholder="last name" required>
+        <br><br>
+        <input class="input1" type="text" id="bio" name="bio" value="{{user.bio}}" placeholder="bio" required>
+        <br><br>
+        <input class="input1" type="text" id="date_of_birth" name="date_of_birth" value="{{user.date_of_birth}}" placeholder="date of birth" required>
+        <br><br>
+        <input class="submit1" type="submit" value="Confirm">
+    </form>
+
+</body>
+</html>

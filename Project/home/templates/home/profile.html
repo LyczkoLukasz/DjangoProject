@@ -19,6 +19,7 @@
             </div>
             <div id="profile_info">
                 <h1>{{user.name}} {{user.surname}}</h1>
+                <h5>{{user.bio}}</h5>
                 <p>Date of birth: {{user.date_of_birth}}</p>
                 <p>Email: {{user.email}}</p>
                 <p>Account created: {{user.date_joined}}</p>
@@ -26,6 +27,5 @@
         </div>
     </user_page>
 
-    <script src="{% static 'home/script.js' %}"></script>
 </body>
 </html>

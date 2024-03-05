@@ -1,36 +1,45 @@
 {% load static %}
-<head>
-    <link rel="stylesheet" type="text/css" href="{% static 'home/style_banner.css' %}">
-</head>
-<banner>
-    <div id="logo">
-        <a href="{% url 'home' %}"><img src="{% static 'home/img/monkee.jpg' %}" alt="logo" style="width: 113px; height: 40px;"></a>
-    </div>
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="{% static 'home/style_banner.css' %}">
+    </head>
+    <body>
+        <banner role="navigation" class="navbar-expand-lg">
+            <div id="logo">
+                <a href="{% url 'home' %}"><img src="{% static 'home/img/monkee.jpg' %}" alt="logo" style="width: 113px; height: 40px;"></a>
+            </div>
 
-    <div id="search">
-        <svg fill="#000000" width="40px" height="40px" viewBox="-8 -8 50 50" xmlns="http://www.w3.org/2000/svg" style="background-color: #f0f2f5; border-radius: 50%; padding: 0px;">
-            <g transform="translate(-609.503 -130.759)">
-            
-                <path d="M622.914,132.759a11.41,11.41,0,1,1-11.411,11.41,11.424,11.424,0,0,1,11.411-11.41m0-2a13.41,13.41,0,1,0,13.41,13.41,13.41,13.41,0,0,0-13.41-13.41Z"/>
-                <path d="M640.208,162.552a1,1,0,0,1-.707-.292L631.64,154.4a1,1,0,1,1,1.414-1.414l7.861,7.86a1,1,0,0,1-.707,1.707Z"/>
-            
-            </g>
-        </svg>
-    </div>
+            <div id="search">
+                <svg fill="#000000" width="40px" height="40px" viewBox="-8 -8 50 50" xmlns="http://www.w3.org/2000/svg" style="background-color: #f0f2f5; border-radius: 50%; padding: 0px;">
+                    <g transform="translate(-609.503 -130.759)">
+                    
+                        <path d="M622.914,132.759a11.41,11.41,0,1,1-11.411,11.41,11.424,11.424,0,0,1,11.411-11.41m0-2a13.41,13.41,0,1,0,13.41,13.41,13.41,13.41,0,0,0-13.41-13.41Z"/>
+                        <path d="M640.208,162.552a1,1,0,0,1-.707-.292L631.64,154.4a1,1,0,1,1,1.414-1.414l7.861,7.86a1,1,0,0,1-.707,1.707Z"/>
+                    
+                    </g>
+                </svg>
+            </div>
 
-    <div id="main_page">
+            <div id="main_page" role="navigation" >
 
-    </div>
+            </div>
 
-    <div id="friends_list">
+            <div id="friends_list">
 
-    </div>
+            </div>
 
-    <div id="notification">
+            <div id="notification">
 
-    </div>
+            </div>
 
-    <div id="account">
+            <div id="account">
 
-    </div>
-</banner>
+            </div>
+        </banner>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    </body>
+</html>
+

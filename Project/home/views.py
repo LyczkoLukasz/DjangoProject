@@ -62,3 +62,6 @@ def registerPage(request):
                 return redirect('home')
 
     return render(request, 'home/signup_page.html')
+
+def profileEdit(request):
+    return render(request, 'home/profile_edit.html')
