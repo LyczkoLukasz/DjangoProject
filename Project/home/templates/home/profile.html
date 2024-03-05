@@ -8,26 +8,10 @@
     <link rel="stylesheet" type="text/css" href="{% static 'home/style_profile.css' %}">
 </head>
 <body>
-    <banner>
-        <div class="logo">
-            <img src="{% static 'home/img/monkee.jpg' %}" alt="logo" style="width: 113px; height: 40px;">
-        </div>
-        <div class="search">
-
-        </div>
-        <div class="main_page">
-
-        </div>
-        <div class="friends_list">
-
-        </div>
-        <div class="notification">
-
-        </div>
-        <div class="account">
-
-        </div>
-    </banner>
+    {% block template %}
+    {% include 'home/base/banner.html' %}
+    {% endblock %}
+    
     <user_page>
         <div class="user_profile"></div>
             <div class="profile_picture">
