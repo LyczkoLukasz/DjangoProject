@@ -1,11 +1,62 @@
+#banner1{
+    padding-bottom: 5px;
+    box-shadow: 0 10px 10px -10px rgba(0, 0, 0, 0.5);
+}
+
 #logo{
     display: inline-block;
     height: 40px;
 }
 
-#search{
-    display: inline-block;
-    width: 40px;
-    height: 40px;
-    margin-left: 10px;
+#nav_button1{
+    width: 100%;
 }
+
+#nav_button2{
+    width: 100%;
+}
+
+#nav_button3{
+    width: 100%;
+}
+
+#nav_button1:hover{
+    background-color: #f2f2f2;
+}
+
+#nav_button2:hover{
+    background-color: #f2f2f2;
+}
+
+#nav_button3:hover{
+    background-color: #f2f2f2;
+}
+
+#nav_button4:hover{
+    background-color: #f2f2f2;
+}
+
+.container {
+    width: 50%;
+    margin: 0 auto;
+    margin-left: 30%;
+    margin-top: 5px;
+    position: relative;
+}
+
+.left-elements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
+.right-elements {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 5px;
+    margin-right: 10px;
+}
+
