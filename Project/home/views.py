@@ -34,7 +34,7 @@ def logoutUser(request):
     return redirect('home')
 
 def home(request):
-    return render(request, 'home/home.html')
+    return render(request, 'home/main.html')
 
 @decorators.login_required(login_url='login')
 def profile(request, pk):
@@ -50,9 +50,10 @@ def registerPage(request):
         password = request.POST.get('password1')
         password2 = request.POST.get('password2')
         User = get_user_model()
+
         if password != password2:
             return redirect('register')
-
+        else:
             if User.objects.filter(email=email).exists() or User.objects.filter(username=username).exists():
                 messages.error(request, 'Email or username already exists')
             else:
