@@ -11,6 +11,7 @@ urlpatterns = [
     #after redirecting from urls.py in Project, this is the first view that is called
     path('home/', views.home, name='home'),
     path('profile/<str:pk>', views.profile, name='profile'),
+    path('profile/', views.myProfile, name='myProfile'),
     path('', RedirectView.as_view(url='/home/')),
     path('profile-edit/', views.profileEdit, name='profileEdit')
 

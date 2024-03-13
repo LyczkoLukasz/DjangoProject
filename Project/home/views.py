@@ -34,11 +34,17 @@ def logoutUser(request):
     return redirect('home')
 
 def home(request):
-    return render(request, 'home/main.html')
+    return render(request, 'home/home.html')
 
 @decorators.login_required(login_url='login')
 def profile(request, pk):
     user = User.objects.get(id=pk)
+    context = {'user': user}
+    return render(request, 'home/profile.html', context)
+
+@decorators.login_required(login_url='login')
+def myProfile(request):
+    user = request.user
     context = {'user': user}
     return render(request, 'home/profile.html', context)
 
