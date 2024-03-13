@@ -70,5 +70,24 @@ def registerPage(request):
 
     return render(request, 'home/signup_page.html')
 
+@decorators.login_required(login_url='login')
 def profileEdit(request):
+    if request.method == 'POST':
+        user = request.user
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        date_of_birth = request.POST.get('date_of_birth')
+        bio = request.POST.get('bio')
+        user.first_name = first_name
+        user.last_name = last_name
+        user.date_of_birth = date_of_birth
+        user.bio = bio
+        user.save()
+        messages.success(request, 'Profile updated')
+        return redirect('profileEdit')
+    else:
+        messages.error(request, 'Something went wrong, try again later :(')
+
+
+
     return render(request, 'home/profile_edit.html')

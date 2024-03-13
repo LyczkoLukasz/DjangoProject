@@ -13,3 +13,6 @@ class User(AbstractUser):
         if self.pk is None and not is_password_usable(self.password):
             self.password = make_password(self.password)
         super().save(*args, **kwargs)
+
+    def raw_db_date_of_birth(self):
+        return self.date_of_birth.strftime('%Y-%m-%d')
