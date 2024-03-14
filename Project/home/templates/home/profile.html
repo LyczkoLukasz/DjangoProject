@@ -6,6 +6,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static 'home/style_profile.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'home/style_banner.css' %}">
 </head>
 <body>
     {% block template %}
@@ -26,6 +28,7 @@
             </div>
         </div>
     </user_page>
+    <a id="edit_profile" class="btn btn-primary" href="{% url 'profileEdit' %}">Edit Profile</a>
 
 </body>
 </html>
