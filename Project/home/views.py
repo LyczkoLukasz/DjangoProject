@@ -91,3 +91,6 @@ def profileEdit(request):
 
 
     return render(request, 'home/profile_edit.html')
+
+def friends(request):
+    return render(request, 'home/friends.html')
