@@ -46,6 +46,8 @@
 
 .left-elements {
     position: absolute;
+    display: flex;
+    align-items: center;
     top: 0;
     left: 0;
     margin-top: 5px;
@@ -60,3 +62,10 @@
     margin-right: 10px;
 }
 
+.btn.dropdown-toggle::after {
+    display: none;
+}
+
+#searchbar{
+    width: 200px;
+}
