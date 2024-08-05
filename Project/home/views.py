@@ -34,7 +34,9 @@ def logoutUser(request):
     return redirect('home')
 
 def home(request):
-    return render(request, 'home/home.html')
+    users = User.objects.all()
+    context = {'users': users}
+    return render(request, 'home/home.html', context)
 
 @decorators.login_required(login_url='login')
 def profile(request, pk):
@@ -92,5 +94,4 @@ def profileEdit(request):
 
     return render(request, 'home/profile_edit.html')
 
-def friends(request):
-    return render(request, 'home/friends.html')
+

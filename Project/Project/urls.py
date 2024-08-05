@@ -23,5 +23,6 @@ urlpatterns = [
     #subdomains are defined here, check home/urls.py for more info
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
+    path('friends/', include('friendship_manager.urls')),
 ]
 
