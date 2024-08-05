@@ -46,7 +46,7 @@ def profile(request, pk):
 def myProfile(request):
     user = request.user
     context = {'user': user}
-    return render(request, 'home/profile.html', context)
+    return render(request, 'home/my_profile.html', context)
 
 def registerPage(request):
 

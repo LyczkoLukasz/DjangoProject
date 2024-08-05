@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My View</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'home/style_profile.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body>
+    {% block template %}
+    {% include 'home/base/banner.html' %}
+    {% endblock %}
+    
+    <user_page>
+        <div id="user_profile"></div>
+            <div id="profile_picture">
+                <img src="{% static 'home/img/man.jpg' %}" alt="Profile Picture">
+            </div>
+            <div id="profile_info">
+                <h1>{{user.name}} {{user.surname}}</h1>
+                <h5>{{user.bio}}</h5>
+                <p>Date of birth: {{user.date_of_birth}}</p>
+                <p>Email: {{user.email}}</p>
+                <p>Account created: {{user.date_joined}}</p>
+            </div>
+        </div>
+    </user_page>
+    <a id="edit_profile" class="btn btn-primary" href="{% url 'profileEdit' %}">Edit Profile</a>
+
+    <a id="logout1" class="btn btn-primary icon-link icon-link-hover" href="{% url 'logout' %}">
+        Logout
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+        </svg>
+    </a>
+    
+
+</body>
+</html>
