@@ -27,6 +27,22 @@
                 <div class="d-flex align-items-center">
                     <strong role="status">Waiting for content</strong>
                     <div class="spinner-border ms-auto" aria-hidden="true"></div>
+                     
+                    {% for friend in friends %}
+                        {% if friend.to_user == request.user.id %}
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ friend.from_user }}</h5>
+                                    <p class="card-text">Received Friends Invite</p>
+                                    <a id="accept-button" href="#" class="btn btn-primary">Accept</a>
+                                    <a id="decline-button" href="#" class="btn btn-primary">Decline</a>
+                                </div>
+                            </div>
+                        {% else %}
+                            <p> No invites received </p>
+                        {% endif %}
+                    {% endfor %}
+                    
                 </div>
             </div>
         </div>
