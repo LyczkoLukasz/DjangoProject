@@ -4,6 +4,11 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model, decorators, login, logout
 from django.contrib.auth.hashers import make_password
 from time import sleep
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from friendship_manager.models import Friendship
+from .models import User
+
 
 
 def LoginPage(request):
@@ -41,7 +46,9 @@ def home(request):
 @decorators.login_required(login_url='login')
 def profile(request, pk):
     user = User.objects.get(id=pk)
-    context = {'user': user}
+    friends = Friendship.objects.filter(from_user=user)
+    is_friend = Friendship.objects.filter(from_user=request.user, to_user=user).exists()
+    context = {'user': user, 'friends': friends, 'is_friend': is_friend}
     return render(request, 'home/profile.html', context)
 
 @decorators.login_required(login_url='login')
@@ -95,3 +102,19 @@ def profileEdit(request):
     return render(request, 'home/profile_edit.html')
 
 
+# Handling friend requests below
+
+@decorators.login_required
+def friend_request(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        if not username:
+            return JsonResponse({'status': 'error', 'message': 'Username not provided.'})
+        
+        user = get_object_or_404(User, username=username)
+        if not Friendship.objects.filter(from_user=request.user, to_user=user).exists():
+            Friendship.objects.create(from_user=request.user, to_user=user)
+            return JsonResponse({'status': 'ok', 'message': 'Zostaliście znajomymi!'})
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Jesteście już znajomymi.'})
+    return JsonResponse({'status': 'error', 'message': 'Nieprawidłowe żądanie.'}, status=400)
