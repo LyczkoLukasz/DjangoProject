@@ -114,7 +114,7 @@ def friend_request(request):
         user = get_object_or_404(User, username=username)
         if not Friendship.objects.filter(from_user=request.user, to_user=user).exists():
             Friendship.objects.create(from_user=request.user, to_user=user, is_Friend=False)
-            return JsonResponse({'status': 'ok', 'message': 'Zostaliście znajomymi!'})
+            return JsonResponse({'status': 'ok', 'message': 'Zaproszenie zostało wysłane.'})
         else:
-            return JsonResponse({'status': 'error', 'message': 'Jesteście już znajomymi.'})
+            return JsonResponse({'status': 'error', 'message': 'Oczekiwanie na odpowiedź od użytkownika.'})
     return JsonResponse({'status': 'error', 'message': 'Nieprawidłowe żądanie.'}, status=400)
