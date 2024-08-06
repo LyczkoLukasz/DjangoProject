@@ -14,5 +14,5 @@ urlpatterns = [
     path('profile/', views.myProfile, name='myProfile'),
     path('', RedirectView.as_view(url='/home/')),
     path('profile-edit/', views.profileEdit, name='profileEdit'),
-
+    path('add-friend/', views.friend_request, name='friend_request'),
 ]
