@@ -1,10 +1,11 @@
+{% load static %}
 <ul>
     {% if friend_requests|length == 0 %}
         <li>No invites sent</li>
 
     {% else %}
         {% for friend_request in friend_requests %}
-            <li>{{ friend_request.to_user }}</li>
+            <li><a class="btn" href="{% url 'profile' friend_request.id %}">{{ friend_request.to_user }}</a></li>
         {% endfor %}
     {% endif %}
 </ul>

@@ -1,3 +1,4 @@
+{% load static %}
 <ul>
     {% if friend_requests|length == 0 %}
         <li>No friends yet</li>
@@ -5,9 +6,9 @@
     {% else %}
         {% for friend_request in friend_requests %}
             {% if friend_request.to_user == request.user.id %}
-                <li>{{ friend_request.from_user }}</li>
+                <li><a class="btn" href="{% url 'profile' friend_request.id %}">{{ friend_request.from_user }}</a></li>
             {% else %}
-                <li>{{ friend_request.to_user }}</li>
+                <li><a class="btn" href="{% url 'profile' friend_request.id %}">{{ friend_request.to_user }}</a></li>
             {% endif %}
         {% endfor %}
     {% endif %}
