@@ -14,9 +14,16 @@
     {% include 'home/base/banner.html' %}
     {% endblock %}
 
-    <!-- adding a post -->
-
-
+    <!-- all users listed -->
+    <div id="all_users">
+        {% for user in users %}
+            {% if user.id is request.user.id %}
+                <a class="btn btn-primary" href="{% url 'myProfile' %}">{{ user.username }}</a>
+            {% else %}
+                <a class="btn btn-primary" href="{% url 'profile' user.id %}">{{ user.username }}</a>
+            {% endif %}
+        {% endfor %}
+    </div>
 
 
     {% if request.user.is_authenticated %}
