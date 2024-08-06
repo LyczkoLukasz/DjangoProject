@@ -1,0 +1,10 @@
+<ul>
+    {% if friend_requests|length == 0 %}
+        <li>No invites sent</li>
+
+    {% else %}
+        {% for friend_request in friend_requests %}
+            <li>{{ friend_request.to_user }}</li>
+        {% endfor %}
+    {% endif %}
+</ul>

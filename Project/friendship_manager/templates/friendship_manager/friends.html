@@ -1,4 +1,5 @@
 {% load static %}
+{% load friendship_tags %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,31 +19,57 @@
         <div class="row">
             <div class="col-lg-2 col-3">
                 <div class="list-group">
-                    <button type="button" class="list-group-item list-group-item-action">Invites received</button>
-                    <button type="button" class="list-group-item list-group-item-action">Invites sent</button>
-                    <button type="button" class="list-group-item list-group-item-action">Friends</button>
+                    <a class="list-group-item list-group-item-action" data-bs-toggle="collapse" href="#collapseReceived" role="button" aria-expanded="false" aria-controls="collapseReceived">
+                        Invites received </a>
+                    <a class="list-group-item list-group-item-action" data-bs-toggle="collapse" href="#collapseSent" role="button" aria-expanded="false" aria-controls="collapseSent">
+                        Invites sent </a>
+                    <a class="list-group-item list-group-item-action" data-bs-toggle="collapse" href="#collapseFriends" role="button" aria-expanded="false" aria-controls="collapseFriends">
+                        Friends </a>
                 </div>
             </div>
             <div class="col-lg-10 col-9">
                 <div class="d-flex align-items-center">
-                    <strong role="status">Waiting for content</strong>
-                    <div class="spinner-border ms-auto" aria-hidden="true"></div>
-                     
-                    {% for friend in friends %}
-                        {% if friend.to_user == request.user.id %}
-                            <div class="card">
+                    <div class="collapse" id="collapseReceived" data-bs-parent="#con1">
+                        {% getListOfReceivedInvitations request.user %}
+                            <!--<div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ friend.from_user }}</h5>
                                     <p class="card-text">Received Friends Invite</p>
                                     <a id="accept-button" href="#" class="btn btn-primary">Accept</a>
                                     <a id="decline-button" href="#" class="btn btn-primary">Decline</a>
                                 </div>
+                            </div>-->
+                    </div>
+                    <div class="collapse" id="collapseSent" data-bs-parent="#con1">
+                        {% getListOfSendedInvitations request.user %}
+                        <!--
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ invite.to_user }}</h5>
+                                    <p class="card-text">Sent Friends Invite</p>
+                                </div>
+                            </div>-->
+
+                    </div>
+                    <div class="collapse" id="collapseFriends" data-bs-parent="#con1">
+                        {% getListOfFriends request.user %}
+                        <!--{% if friend.to_user == request.user.id %}
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ friend.from_user }}</h5>
+                                    <p class="card-text">Friends</p>
+                                </div>
                             </div>
                         {% else %}
-                            <p> No invites received </p>
-                        {% endif %}
-                    {% endfor %}
-                    
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ friend.to_user }}</h5>
+                                    <p class="card-text">Friends</p>
+                                </div>
+                            </div>
+                        {% endif %}-->
+                    </div>
+                     
                 </div>
             </div>
         </div>

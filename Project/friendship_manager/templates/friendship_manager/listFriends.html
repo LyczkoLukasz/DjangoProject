@@ -1,0 +1,14 @@
+<ul>
+    {% if friend_requests|length == 0 %}
+        <li>No friends yet</li>
+
+    {% else %}
+        {% for friend_request in friend_requests %}
+            {% if friend_request.to_user == request.user.id %}
+                <li>{{ friend_request.from_user }}</li>
+            {% else %}
+                <li>{{ friend_request.to_user }}</li>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+</ul>
