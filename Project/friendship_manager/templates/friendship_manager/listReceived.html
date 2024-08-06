@@ -5,7 +5,7 @@
 
     {% else %}
         {% for friend_request in friend_requests %}
-            <li><a class="btn" href="{% url 'profile' friend_request.id %}" >{{ friend_request.from_user }}</a></li>
+            <li><a class="btn" href="{% url 'profile' friend_request.from_user.id %}" >{{ friend_request.from_user }}</a></li>
         {% endfor %}
     {% endif %}
 </ul>
