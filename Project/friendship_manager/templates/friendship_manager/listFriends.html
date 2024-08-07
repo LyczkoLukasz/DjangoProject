@@ -5,13 +5,15 @@
 
     {% else %}
         {% for friend_request in friend_requests %}
-            {% if friend_request.to_user == request.user.id %}
-                <div class="card text-center" style="margin-bottom: 15px;">
+            {% if friend_request.to_user == user %}
+                <div class="card" style="margin-bottom: 15px;">
                     <div class="card-body">
                         <h5 class="card-title">
                             <a class="btn btn-light" href="{% url 'profile' friend_request.from_user.id %}">{{ friend_request.from_user }}</a>
                         </h5>
                         <p class="card-text">Friends</p>
+                        <a id="delete-button" href="#" class="btn btn-primary">Kill Friendship</a>
+                        
                     </div>
                 </div>
             {% else %}
@@ -28,3 +30,4 @@
         {% endfor %}
     {% endif %}
 </ul>
+

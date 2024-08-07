@@ -39,7 +39,7 @@
         </a>
     </p>
         <!-- Adding friend btn -->
-        {% if not is_friend %}
+        {% if not is_friend.is_Friend %}
         <button id="add-friend-btn" data-username="{{ user.username }}">Dodaj znajomego</button>
         <p id="friend-status"></p>
     {% else %}

@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from friendship_manager.models import Friendship
 from .models import User
+from django.db.models import Q
 
 
 
@@ -47,8 +48,10 @@ def home(request):
 def profile(request, pk):
     user = User.objects.get(id=pk)
     friends = Friendship.objects.filter(from_user=user)
-    is_friend = Friendship.objects.filter(from_user=request.user, to_user=user).exists()
-    context = {'user': user, 'friends': friends, 'is_friend': is_friend}
+    is_friend = Friendship.objects.filter(Q(from_user=request.user, to_user=user) | Q(from_user=user, to_user=request.user))
+    is_friend_obj = is_friend.first()
+    print(is_friend_obj)
+    context = {'user': user, 'friends': friends, 'is_friend': is_friend_obj}
     return render(request, 'home/profile.html', context)
 
 @decorators.login_required(login_url='login')
@@ -118,3 +121,4 @@ def friend_request(request):
         else:
             return JsonResponse({'status': 'error', 'message': 'Oczekiwanie na odpowiedź od użytkownika.'})
     return JsonResponse({'status': 'error', 'message': 'Nieprawidłowe żądanie.'}, status=400)
+
