@@ -1,11 +1,22 @@
 {% load static %}
 <ul>
     {% if friend_requests|length == 0 %}
-        <li>No invites received</li>
+        <h4>No invites received</h4>
 
     {% else %}
         {% for friend_request in friend_requests %}
-            <li><a class="btn" href="{% url 'profile' friend_request.from_user.id %}" >{{ friend_request.from_user }}</a></li>
+            <div class="card" style="margin-bottom: 15px;"> <!-- profile images to be added here in the future-->
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a class="btn btn-light" href="{% url 'profile' friend_request.from_user.id %}">
+                        {{ friend_request.from_user }}</a>
+                    </h5>
+                    <p class="card-text">Received Friends Invite</p>
+                    <a id="accept-button" href="#" class="btn btn-primary">Accept</a>
+                    <a id="decline-button" href="#" class="btn btn-primary">Decline</a>
+                </div>
+            </div>
+
         {% endfor %}
     {% endif %}
 </ul>

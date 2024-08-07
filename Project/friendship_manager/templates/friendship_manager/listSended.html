@@ -1,11 +1,20 @@
 {% load static %}
 <ul>
     {% if friend_requests|length == 0 %}
-        <li>No invites sent</li>
+        <h4>No invites sent</h4>
 
     {% else %}
         {% for friend_request in friend_requests %}
-            <li><a class="btn" href="{% url 'profile' friend_request.to_user.id %}">{{ friend_request.to_user }}</a></li>
+            <div class="card" style="margin-bottom: 15px;">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a class="btn btn-light" href="{% url 'profile' friend_request.to_user.id %}">
+                            {{ friend_request.to_user }}</a>
+                    </h5>
+                    <p class="card-text">Sent Friends Invite</p>
+                    <a id="cancel-button" href="#" class="btn btn-primary">Cancel Invite</a>
+                </div>
+            </div>
         {% endfor %}
     {% endif %}
 </ul>

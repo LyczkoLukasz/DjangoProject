@@ -1,14 +1,29 @@
 {% load static %}
 <ul>
     {% if friend_requests|length == 0 %}
-        <li>No friends yet</li>
+        <h4>No friends yet</h4>
 
     {% else %}
         {% for friend_request in friend_requests %}
             {% if friend_request.to_user == request.user.id %}
-                <li><a class="btn" href="{% url 'profile' friend_request.from_user.id %}">{{ friend_request.from_user }}</a></li>
+                <div class="card" style="margin-bottom: 15px;">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a class="btn btn-light" href="{% url 'profile' friend_request.from_user.id %}">{{ friend_request.from_user }}</a>
+                        </h5>
+                        <p class="card-text">Friends</p>
+                    </div>
+                </div>
             {% else %}
-                <li><a class="btn" href="{% url 'profile' friend_request.to_user.id %}">{{ friend_request.to_user }}</a></li>
+                <div class="card" style="margin-bottom: 15px;">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a class="btn btn-light" href="{% url 'profile' friend_request.to_user.id %}">{{ friend_request.to_user }}</a>
+                        </h5>
+                        <p class="card-text">Friends</p>
+                        <a id="delete-button" href="#" class="btn btn-primary">Kill Friendship</a>
+                    </div>
+                </div>
             {% endif %}
         {% endfor %}
     {% endif %}
