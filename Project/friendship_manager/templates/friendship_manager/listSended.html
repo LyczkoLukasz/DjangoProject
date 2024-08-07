@@ -5,7 +5,7 @@
 
     {% else %}
         {% for friend_request in friend_requests %}
-            <div class="card" style="margin-bottom: 15px;">
+            <div class="card text-center" style="margin-bottom: 15px;">
                 <div class="card-body">
                     <h5 class="card-title">
                         <a class="btn btn-light" href="{% url 'profile' friend_request.to_user.id %}">

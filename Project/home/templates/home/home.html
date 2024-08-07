@@ -14,6 +14,16 @@
     {% include 'home/base/banner.html' %}
     {% endblock %}
 
+    <!-- post creating -->
+    <div id="create_post">
+        <form method="POST" enctype="multipart/form-data"> <!-- action="url" -->
+            {% csrf_token %}
+            <textarea name="content" placeholder="Content" required></textarea>
+            <input type="file" name="image" required>
+            <button type="submit" class="btn btn-primary">Create Post</button>
+        </form>
+    </div>
+
     <!-- all users listed -->
     <div id="all_users">
         {% for user in users %}
@@ -42,37 +52,38 @@
     </a>
     {% endif %}
     
-    <!--
+    <!-- posts -->
     <main>
-        <section id="post">
-            <div id="post-header">
-                <h2>John Doe</h2>
+        <div class="container d-flex justify-content-center align-items-center" style="min-height: 50vh; margin-top: 5vh;">
+            <div class="card w-75 text-center">
+                <div class="card-header">
+                    <h2>John Doe</h2>
+                </div>
+                <div class="card-body">
+                    <img src="{% static 'home/img/woman.jpg' %}" alt="woman Photo" class="img-fluid">
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-primary">Like</button>
+                    <button class="btn btn-primary">Comment</button>
+                </div>
             </div>
-            <div id="post-content">
-                <img src="{% static 'home/img/man.jpg' %}" alt="Beach Photo">
+        </div>
+        <div class="container d-flex justify-content-center align-items-center" style="min-height: 50vh; margin-top: 5vh;">
+            <div class="card w-75 text-center">
+                <div class="card-header">
+                    <h2>John Doe the second</h2>
+                </div>
+                <div class="card-body">
+                    <img src="{% static 'home/img/woman.jpg' %}" alt="woman2 Photo" class="img-fluid">
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-primary">Like</button>
+                    <button class="btn btn-primary">Comment</button>
+                </div>
             </div>
-            <div id="post-footer">
-                <button id="post-button">Like</button>
-                <button id="post-button">Comment</button>
-                <button id="post-button">Share</button>
-            </div>
-        </section>
-        
-        <section id="post">
-            <div id="post-header">
-                <h2>Jane Smith</h2>
-            </div>
-            <div id="post-content">
-                <img src="{% static 'home/img/woman.jpg' %}" alt="Beach Photo">
-            </div>
-            <div id="post-footer">
-                <button>Like</button>
-                <button>Comment</button>
-                <button>Share</button>
-            </div>
-        </section>
-    </main> 
-    -->
+        </div>
+    </main>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

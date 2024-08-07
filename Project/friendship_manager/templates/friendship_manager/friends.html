@@ -31,45 +31,13 @@
                 <div class="d-flex align-items-center">
                     <div class="collapse" id="collapseReceived" data-bs-parent="#con1">
                         {% getListOfReceivedInvitations request.user %}
-                            <!--<div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ friend.from_user }}</h5>
-                                    <p class="card-text">Received Friends Invite</p>
-                                    <a id="accept-button" href="#" class="btn btn-primary">Accept</a>
-                                    <a id="decline-button" href="#" class="btn btn-primary">Decline</a>
-                                </div>
-                            </div>-->
                     </div>
                     <div class="collapse" id="collapseSent" data-bs-parent="#con1">
                         {% getListOfSendedInvitations request.user %}
-                        <!--
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ invite.to_user }}</h5>
-                                    <p class="card-text">Sent Friends Invite</p>
-                                </div>
-                            </div>-->
-
                     </div>
                     <div class="collapse" id="collapseFriends" data-bs-parent="#con1">
                         {% getListOfFriends request.user %}
-                        <!--{% if friend.to_user == request.user.id %}
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ friend.from_user }}</h5>
-                                    <p class="card-text">Friends</p>
-                                </div>
-                            </div>
-                        {% else %}
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ friend.to_user }}</h5>
-                                    <p class="card-text">Friends</p>
-                                </div>
-                            </div>
-                        {% endif %}-->
                     </div>
-                     
                 </div>
             </div>
         </div>
