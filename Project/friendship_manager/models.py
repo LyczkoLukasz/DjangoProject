@@ -19,4 +19,8 @@ class Friendship(models.Model):
         unique_together = ('from_user', 'to_user')
 
     def __str__(self):
-        return f'{self.from_user} is friends with {self.to_user}'
+        if self.is_Friend:
+            return f'{self.from_user} is friends with {self.to_user}'
+        elif not self.is_Friend:
+            return f'{self.from_user} is not friends with {self.to_user}'
+        return 'there is missing data in this object'

@@ -1,4 +1,5 @@
 {% load static %}
+{% load home_tags %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -42,10 +43,12 @@
     {% if is_friend is null %}
         <button id="add-friend-btn" data-username="{{ user.username }}">Dodaj znajomego</button>
         <p id="friend-status"></p>
-    {% elif not is_friend.is_Friend %}
-        {% include 'home/buttons/cancel.html' %}
+    {% elif is_friend.from_user == request.user and is_friend.to_user == user and is_friend.is_Friend == False %}
+        {% getSentInvitation request.user user %}
+    {% elif is_friend.from_user == user and is_friend.to_user == request.user and is_friend.is_Friend == False %}
+        {% getReceivedInvitation request.user user %}
     {% else %}
-        {% include 'home/buttons/kill.html' %}
+        {% getFriend request.user user %}
     {% endif %}
     
     <script>
