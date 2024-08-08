@@ -2,7 +2,6 @@
 <ul>
     {% if friend_requests|length == 0 %}
         <h4>No invites sent</h4>
-
     {% else %}
         {% for friend_request in friend_requests %}
             <div class="card text-center" style="margin-bottom: 15px;">
@@ -12,9 +11,39 @@
                             {{ friend_request.to_user }}</a>
                     </h5>
                     <p class="card-text">Sent Friends Invite</p>
-                    <a id="cancel-button" href="#" class="btn btn-primary">Cancel Invite</a>
+                    <a from-who="{{ friend_request.from_user }}" to-who="{{ friend_request.to_user }}" class="btn btn-primary cancel-button">Cancel Invite</a>
+                    <p class="cancel-status"></p>
                 </div>
             </div>
         {% endfor %}
     {% endif %}
 </ul>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.cancel-button').forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                console.log('cancel button clicked');
+                var fromWho = this.getAttribute('from-who');
+                var toWho = this.getAttribute('to-who');
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '{% url "friendship_rejected_or_killed" %}');
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        button.nextElementSibling.innerText = response.message;
+                        if (response.status === 'ok') {
+                            button.style.display = 'none';
+                        }
+                    } else {
+                        button.nextElementSibling.innerText = 'Error with canceling the friendship.';
+                    }
+                };
+                xhr.send('fromWho=' + encodeURIComponent(fromWho) + '&toWho=' + encodeURIComponent(toWho));
+            });
+        });
+    });
+</script>

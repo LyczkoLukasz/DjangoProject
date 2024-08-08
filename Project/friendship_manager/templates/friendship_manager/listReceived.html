@@ -12,9 +12,10 @@
                         {{ friend_request.from_user }}</a>
                     </h5>
                     <p class="card-text">Received Friends Invite</p>
-                    <a id="accept-button" href="#" from-who="{{ friend_request.from_user }}" to-who="{{ friend_request.to_user }}" class="btn btn-primary">Accept</a>
+                    <a from-who="{{ friend_request.from_user }}" to-who="{{ friend_request.to_user }}" class="btn btn-primary accept-button">Accept</a>
                     <p id="accept-status"></p>
-                    <a id="decline-button" href="#" class="btn btn-primary">Decline</a>
+                    <a from-who="{{ friend_request.from_user }}" to-who="{{ friend_request.to_user }}" class="btn btn-primary decline-button">Decline</a>
+                    <p class="decline-status"></p>
                 </div>
             </div>
 
@@ -23,24 +24,56 @@
 </ul>
 
 <script>
-    document.getElementById('accept-button').addEventListener('click', function() {
-        var fromWho = this.getAttribute('from-who');
-        var toWho = this.getAttribute('to-who');
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '{% url "friendship_accepted" %}');
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
-                document.getElementById('accept-status').innerText = response.message;
-                if (response.status === 'ok') {
-                    document.getElementById('accept-button').style.display = 'none';
-                }
-            } else {
-                document.getElementById('accept-status').innerText = 'Błąd podczas akceptowania znajomego.';
-            }
-        };
-        xhr.send('fromWho=' + encodeURIComponent(fromWho)+ '&toWho=' + encodeURIComponent(toWho));
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.accept-button').forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                var fromWho = this.getAttribute('from-who');
+                var toWho = this.getAttribute('to-who');
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '{% url "friendship_accepted" %}');
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        button.nextElementSibling.innerText = response.message;
+                        if (response.status === 'ok') {
+                            button.style.display = 'none';
+                        }
+                    } else {
+                        button.nextElementSibling.innerText = 'Error with accepting the invite.';
+                    }
+                };
+                xhr.send('fromWho=' + encodeURIComponent(fromWho) + '&toWho=' + encodeURIComponent(toWho));
+            });
+        });
     });
-    </script>
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.decline-button').forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                var fromWho = this.getAttribute('from-who');
+                var toWho = this.getAttribute('to-who');
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '{% url "friendship_rejected_or_killed" %}');
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        button.nextElementSibling.innerText = response.message;
+                        if (response.status === 'ok') {
+                            button.style.display = 'none';
+                        }
+                    } else {
+                        button.nextElementSibling.innerText = 'Error with declining the invite.';
+                    }
+                };
+                xhr.send('fromWho=' + encodeURIComponent(fromWho) + '&toWho=' + encodeURIComponent(toWho));
+            });
+        });
+    });
+</script>

@@ -40,3 +40,32 @@ def friendship_accepted(request):
         friendship.save()
         return JsonResponse({'status': 'ok', 'message': 'Zaproszenie zaakceptowane!'})
     return JsonResponse({'status': 'error', 'message': 'Nieprawidłowe żądanie.'}, status=400)
+
+@login_required
+def friendship_rejected_or_killed(request):
+    print('Uruchomiono funkcję friendship_rejected_or_killed')
+    if request.method == 'POST':
+        fromUser = request.POST.get('fromWho')
+        toUser = request.POST.get('toWho')
+        print(fromUser)
+        print(toUser)
+
+        if not fromUser:
+            return JsonResponse({'status': 'error', 'message': 'Id of sender not provided.'})
+        if not toUser:
+            return JsonResponse({'status': 'error', 'message': 'Id of receiver not provided.'})
+
+
+        sender = get_object_or_404(User, username=fromUser)
+        receiver = get_object_or_404(User, username=toUser)
+        if Friendship.objects.filter(from_user=sender , to_user=receiver).exists():
+            friendship = Friendship.objects.get(from_user=sender , to_user=receiver)
+        elif Friendship.objects.filter(from_user=receiver , to_user=sender).exists():
+            friendship = Friendship.objects.get(from_user=receiver , to_user=sender)
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Friendship not found.'})
+        
+        #delete object from database
+        friendship.delete()
+        return JsonResponse({'status': 'ok', 'message': 'deleted successfully!'})
+    return JsonResponse({'status': 'error', 'message': 'Nieprawidłowe żądanie.'}, status=400)   
