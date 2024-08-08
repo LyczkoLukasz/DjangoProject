@@ -38,12 +38,14 @@
             </svg>
         </a>
     </p>
-        <!-- Adding friend btn -->
-        {% if not is_friend.is_Friend %}
+    <!-- Adding friend btn -->
+    {% if is_friend is null %}
         <button id="add-friend-btn" data-username="{{ user.username }}">Dodaj znajomego</button>
         <p id="friend-status"></p>
+    {% elif not is_friend.is_Friend %}
+        {% include 'home/buttons/cancel.html' %}
     {% else %}
-        <p>Jesteście znajomymi</p>
+        {% include 'home/buttons/kill.html' %}
     {% endif %}
     
     <script>
