@@ -3,7 +3,7 @@ DBpasswords = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'railway',
         'USER': 'postgres',
-        'PASSWORD': '2d82027654b0fbf9655ad971572065pl',
+        'PASSWORD': 'dupa',
         'HOST': 'monorail.proxy.rlwy.net',
         'PORT': '39293',
     }
