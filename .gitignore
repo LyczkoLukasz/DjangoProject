@@ -1,4 +1,6 @@
 *.pyc
 __pycache__/
 venv/
+data.py
 Project/data.py
+Project/Project/data.py
