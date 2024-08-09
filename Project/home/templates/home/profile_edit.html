@@ -18,26 +18,71 @@
                 <img src="{% static 'home/img/man.jpg' %}" alt="Profile Picture">
             </div>
             <div id="profile_info">
-                <h1>{{user.first_name}} {{user.last_name}}</h1>
-                <h5>{{user.bio}}</h5>
-                <p>Date of birth: {{user.date_of_birth}}</p>
+                {% if not user.first_name %}
+                    {% if not user.last_name %}
+                        <h1>{{user.username}}</h1>
+                    {% else %}
+                        <h1>{{user.last_name}}</h1>
+                    {% endif %}
+                {% else %}
+                    {% if not user.last_name %}
+                        <h1>{{user.first_name}}</h1>
+                    {% else %}
+                        <h1>{{user.first_name}} {{user.last_name}}</h1>
+                    {% endif %}
+                {% endif %}
+                {% if user.bio %}
+                    <h5>{{user.bio}}</h5>
+                {% endif %}
+                {% if user.date_of_birth %}
+                    <p>Date of birth: {{user.date_of_birth}}</p>
+                {% endif %}
                 <p>Email: {{user.email}}</p>
                 <p>Account created: {{user.date_joined}}</p>
             </div>
         </div>
     </user_page>
-    <form id="user_data" action="" method="POST">
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <form id="user_data" action="" method="POST" style="margin-left: 10px;">
         {% csrf_token %}
+        <h5>First name:</h5>
         <input class="input1" type="text" id="first_name" name="first_name" value="{{user.first_name}}" placeholder="first name" required>
         <br><br>
+        <h5>Last name:</h5>
         <input class="input1" type="text" id="last_name" name="last_name" value="{{user.last_name}}" placeholder="last name" required>
         <br><br>
-        <textarea class="input1" type="text" id="bio" name="bio" placeholder="bio">{{user.bio}}</textarea>
+        <h5>Username:</h5>
+        <input class="input1" type="text" id="username" name="username" value="{{user.username}}" placeholder="username" required>
         <br><br>
-        <input class="input1" type="text" id="date_of_birth" name="date_of_birth" value="{{user.raw_db_date_of_birth}}" placeholder="date of birth" required>
+        <h5>Email:</h5>
+        <input class="input1" type="email" id="email" name="email" value="{{user.email}}" placeholder="email" required>
+        <br><br>
+        <h5>Bio(not required):</h5>
+        {% if user.bio %}
+            <textarea class="input1" type="text" id="bio" name="bio" placeholder="bio">{{user.bio}}</textarea>
+        {% else %}
+            <textarea class="input1" type="text" id="bio" name="bio" placeholder="bio"></textarea>
+        {% endif %}
+        <br><br>
+        <h5>Date of birth(not required):</h5>
+        {% if user.date_of_birth %}
+            <input class="input1" type="text" id="date_of_birth" name="date_of_birth" value="{{user.raw_db_date_of_birth}}" placeholder="YYYY-MM-DD">
+        {% else %}
+            <input class="input1" type="text" id="date_of_birth" name="date_of_birth" placeholder="YYYY-MM-DD">
+        {% endif %}
         <br><br>
         <input class="submit1" type="submit" value="Confirm">
     </form>
+
+    <script>
+        
+    </script>
 
 </body>
 </html>

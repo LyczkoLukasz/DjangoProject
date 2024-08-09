@@ -88,19 +88,31 @@ def profileEdit(request):
         user = request.user
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
+        username = request.POST.get('username')
+        email = request.POST.get('email')
         date_of_birth = request.POST.get('date_of_birth')
         bio = request.POST.get('bio')
-        user.first_name = first_name
-        user.last_name = last_name
-        user.date_of_birth = date_of_birth
-        user.bio = bio
-        user.save()
-        messages.success(request, 'Profile updated')
-        return redirect('profileEdit')
+
+        try:
+            # Check if the username is already taken by another user
+            if User.objects.filter(username=username).exclude(pk=user.pk).exists():
+                messages.error(request, 'Username already in use.')
+            elif User.objects.filter(email=email).exclude(pk=user.pk).exists():
+                messages.error(request, 'Email already in use.')
+            else:
+                user.first_name = first_name
+                user.last_name = last_name
+                user.username = username
+                user.email = email
+                user.date_of_birth = date_of_birth
+                user.bio = bio
+                user.save()
+                messages.success(request, 'Profile updated')
+                return redirect('profileEdit')
+        except Exception as e:
+            messages.error(request, 'Something went wrong, try again later :(')
     else:
-        messages.error(request, 'Something went wrong, try again later :(')
-
-
+        pass
 
     return render(request, 'home/profile_edit.html')
 

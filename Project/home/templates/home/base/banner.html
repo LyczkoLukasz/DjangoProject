@@ -77,7 +77,21 @@
             
             <div class="right-elements">
                 <!-- name -->
-                <p style="margin-top: 8px; margin-bottom: 8px; margin-right: 4px;">{{request.user.name}}</p>
+                <p style="margin-top: 8px; margin-bottom: 8px; margin-right: 4px;">
+                    {% if not request.user.first_name %}
+                        {% if not request.user.last_name %}
+                            {{request.user.username}}
+                        {% else %}
+                            {{request.user.last_name}}
+                        {% endif %}
+                    {% else %}
+                        {% if not request.user.last_name %}
+                            {{request.user.first_name}}
+                        {% else %}
+                            {{request.user.first_name}} {{request.user.last_name}}
+                        {% endif %}
+                    {% endif %}
+                </p>
                 <!-- account -->
                 <a id="nav_button4" class="btn" href="{% url 'myProfile' %}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">

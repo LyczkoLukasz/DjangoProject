@@ -21,9 +21,25 @@
                 <img src="{% static 'home/img/man.jpg' %}" alt="profile picture">
             </div>
             <div id="profile_info">
-                <h1>{{user.first_name}} {{user.last_name}}</h1>
-                <h5>{{user.bio}}</h5>
-                <p>Date of birth: {{user.date_of_birth}}</p>
+                {% if not user.first_name %}
+                    {% if not user.last_name %}
+                        <h1>{{user.username}}</h1>
+                    {% else %}
+                        <h1>{{user.last_name}}</h1>
+                    {% endif %}
+                {% else %}
+                    {% if not user.last_name %}
+                        <h1>{{user.first_name}}</h1>
+                    {% else %}
+                        <h1>{{user.first_name}} {{user.last_name}}</h1>
+                    {% endif %}
+                {% endif %}
+                {% if user.bio %}
+                    <h5>{{user.bio}}</h5>
+                {% endif %}
+                {% if user.date_of_birth %}
+                    <p>Date of birth: {{user.date_of_birth}}</p>
+                {% endif %}
                 <p>Email: {{user.email}}</p>
                 <p>Account created: {{user.date_joined}}</p>
             </div>
