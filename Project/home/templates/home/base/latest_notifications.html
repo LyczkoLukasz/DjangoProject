@@ -1,0 +1,7 @@
+<div class="dropdown-menu" aria-labelledby="nav_button3">
+    <!-- Dropdown menu items go here -->
+    {% for notification in notifications %}
+        <a class="dropdown-item" href="#">{{ notification.title }}</a>
+    {% endfor %}
+    <a class="dropdown-item" href="{% url 'notifications' %}">Show all notifications</a>
+</div>
