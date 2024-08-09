@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'home',
     'friendship_manager',
+    'posts_manager',
 ]
 
 MIDDLEWARE = [
