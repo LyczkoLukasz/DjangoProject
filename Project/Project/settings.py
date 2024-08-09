@@ -38,9 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+
     'home',
     'friendship_manager',
     'posts_manager',
+    'notifications',
+
 ]
 
 MIDDLEWARE = [

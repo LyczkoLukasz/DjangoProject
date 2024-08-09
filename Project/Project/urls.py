@@ -24,5 +24,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
     path('friends/', include('friendship_manager.urls')),
+    path('notifications/', include('notifications.urls')),
 ]
 
