@@ -92,7 +92,6 @@ def profileEdit(request):
         email = request.POST.get('email')
         date_of_birth = request.POST.get('date_of_birth')
         bio = request.POST.get('bio')
-<<<<<<< HEAD
 
         try:
             # Check if the username is already taken by another user
@@ -112,7 +111,7 @@ def profileEdit(request):
                 return redirect('profileEdit')
         except Exception as e:
             messages.error(request, 'Something went wrong, try again later :(')
-=======
+
         user.first_name = first_name
         user.last_name = last_name
         try:
@@ -123,7 +122,7 @@ def profileEdit(request):
         user.save()
         messages.success(request, 'Profile updated')
         return redirect('profileEdit')
->>>>>>> 4bd48e9 (Beta notifications app, schema of notifcations)
+
     else:
         pass
 
