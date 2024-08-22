@@ -43,7 +43,7 @@ def logoutUser(request):
 
 def home(request):
     users = User.objects.all()
-    posts= Posts.get_Posts()
+    posts = Posts.get_Posts()
     context = {'users': users , 'posts': posts}
     return render(request, 'home/home.html', context)
 
