@@ -9,6 +9,8 @@ from django.shortcuts import get_object_or_404
 from friendship_manager.models import Friendship
 from .models import User
 from django.db.models import Q
+from posts_manager.models import Posts, Comments
+from posts_manager.views import posts_index
 
 
 
@@ -41,7 +43,8 @@ def logoutUser(request):
 
 def home(request):
     users = User.objects.all()
-    context = {'users': users}
+    posts= Posts.get_Posts()
+    context = {'users': users , 'posts': posts}
     return render(request, 'home/home.html', context)
 
 @decorators.login_required(login_url='login')

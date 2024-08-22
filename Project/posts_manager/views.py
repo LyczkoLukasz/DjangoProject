@@ -5,6 +5,7 @@ from .models import Posts, Comments
 
 
 def posts_index(request):
-    posts = Posts.objects.all().order_by('-post_created_at')
+    posts = Posts.objects.all()#.order_by('-post_created_at')
+    print(posts)  # Debugging line
     context = {'posts': posts}
-    return render(request, 'posts_manager/posts_index.html', context)
+    return render(request, 'home/posts.html', context)

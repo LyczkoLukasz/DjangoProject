@@ -18,6 +18,10 @@ class Posts(models.Model):
     def __str__(self):
         return f'Post {self.post_title} created by {self.post_user} at {self.post_created_at}.'
     
+    def get_Posts():
+        posts = Posts.objects.all().order_by('-post_created_at')
+        return posts
+    
 class Comments(models.Model):
     comment_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comment_user')
     comment_post = models.ForeignKey(Posts, on_delete=models.CASCADE, related_name='comment_post')
