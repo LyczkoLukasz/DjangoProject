@@ -43,7 +43,17 @@ def logoutUser(request):
 
 def home(request):
     users = User.objects.all()
-    posts = Posts.get_Posts()
+    all_posts = Posts.get_Posts()
+
+    possible_friends= Friendship.objects.filter(Q(from_user=request.user.id) | Q(to_user=request.user.id)) #lista relacji
+    friends = set() #lista znajomych
+    for relation in possible_friends:
+        if relation.from_user == request.user and relation.is_Friend == True:
+            friends.add(relation.to_user.id)
+        elif relation.to_user == request.user and relation.is_Friend == True:
+            friends.add(relation.from_user.id)
+
+    posts = all_posts.filter(author__id__in=friends)
     
     if request.method == 'POST':
         response = add_post(request)
