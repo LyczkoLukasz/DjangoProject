@@ -10,7 +10,6 @@ from friendship_manager.models import Friendship
 from .models import User
 from django.db.models import Q
 from posts_manager.models import Posts, Comments
-from posts_manager.views import posts_index
 
 
 
@@ -44,6 +43,7 @@ def logoutUser(request):
 def home(request):
     users = User.objects.all()
     posts = Posts.get_Posts()
+    add_post(request)
     context = {'users': users , 'posts': posts}
     return render(request, 'home/home.html', context)
 
@@ -149,3 +149,21 @@ def friend_request(request):
             return JsonResponse({'status': 'error', 'message': 'Oczekiwanie na odpowiedź od użytkownika.'})
     return JsonResponse({'status': 'error', 'message': 'Nieprawidłowe żądanie.'}, status=400)
 
+
+@decorators.login_required
+def add_post(request):
+    print("dupa")
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        user = request.user
+
+        # Create a new post object
+        post = Posts(author=user, title=title, content=content)
+        print("dupa2")
+        post.save()
+
+        messages.success(request, 'Post added successfully')
+        return redirect('home')
+
+    return render(request, 'home/home.html')

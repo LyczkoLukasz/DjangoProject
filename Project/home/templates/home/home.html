@@ -15,12 +15,19 @@
     {% endblock %}
 
     <!-- post creating -->
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
     <div id="create_post">
-        <form method="POST" enctype="multipart/form-data"> <!-- action="url" -->
+        <form action="" method="POST"> <!-- action="url" -->
             {% csrf_token %}
-            <textarea name="content" placeholder="Content" required></textarea>
-            <input type="file" name="image" required>
-            <button type="submit" class="btn btn-primary">Create Post</button>
+            <input type="text" id="title" name="title" placeholder="title" required>
+            <input type="text" id="content" name="content" placeholder="content" required>
+            <input class="btn btn-primary" type="submit" value="Create Post">
         </form>
     </div>
 
@@ -55,42 +62,27 @@
     <!-- posts -->
 
     {% for post in posts %}
-        <div class="post">
-            <h3>{{ post.title }}</h3>
-            <p>{{ post.content }}</p>
+        <div class="container d-flex justify-content-center align-items-center" style="min-height: 50vh; margin-top: 5vh;">
+            <div class="card w-75 text-center">
+                <div class="card-header">
+                    <h4>Author: {{ post.author }}</h4>
+                    <p>Created at: {{ post.created_at }}</p>
+                    <h3>{{ post.title }}</h3>
+                </div>
+                <div class="card-body">
+                    <p>{{ post.content }}</p>
+                </div>
+                <div class="card-footer d-flex justify-content-around">
+                    <p>Likes: {{post.likes}}</p>
+                    <button class="btn btn-primary">Like</button>
+                    <p>Comments: {{post.comments}}</p>
+                    <button class="btn btn-primary">Comment</button>
+                    <p>Views: {{post.views}}</p>
+                </div>
+            </div>
         </div>
     {% endfor %}
     
-    <main>
-        <div class="container d-flex justify-content-center align-items-center" style="min-height: 50vh; margin-top: 5vh;">
-            <div class="card w-75 text-center">
-                <div class="card-header">
-                    <h2>John Doe</h2>
-                </div>
-                <div class="card-body">
-                    <img src="{% static 'home/img/woman.jpg' %}" alt="woman Photo" class="img-fluid">
-                </div>
-                <div class="card-footer">
-                    <button class="btn btn-primary">Like</button>
-                    <button class="btn btn-primary">Comment</button>
-                </div>
-            </div>
-        </div>
-        <div class="container d-flex justify-content-center align-items-center" style="min-height: 50vh; margin-top: 5vh;">
-            <div class="card w-75 text-center">
-                <div class="card-header">
-                    <h2>John Doe the second</h2>
-                </div>
-                <div class="card-body">
-                    <img src="{% static 'home/img/woman.jpg' %}" alt="woman2 Photo" class="img-fluid">
-                </div>
-                <div class="card-footer">
-                    <button class="btn btn-primary">Like</button>
-                    <button class="btn btn-primary">Comment</button>
-                </div>
-            </div>
-        </div>
-    </main>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
