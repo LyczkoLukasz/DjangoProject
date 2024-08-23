@@ -10,6 +10,7 @@ from friendship_manager.models import Friendship
 from .models import User
 from django.db.models import Q
 from posts_manager.models import Posts, Comments
+from django.http import HttpResponseRedirect
 
 
 
@@ -43,8 +44,15 @@ def logoutUser(request):
 def home(request):
     users = User.objects.all()
     posts = Posts.get_Posts()
-    add_post(request)
-    context = {'users': users , 'posts': posts}
+    
+    if request.method == 'POST':
+        response = add_post(request)
+        if response:
+            return response  # Zwróć odpowiedź z add_post
+        else:
+            return redirect('home')  # Jeśli add_post nie zwróci odpowiedzi, przekieruj na home
+
+    context = {'users': users, 'posts': posts}
     return render(request, 'home/home.html', context)
 
 @decorators.login_required(login_url='login')
@@ -152,18 +160,17 @@ def friend_request(request):
 
 @decorators.login_required
 def add_post(request):
-    print("dupa")
-    if request.method == 'POST':
-        title = request.POST.get('title')
-        content = request.POST.get('content')
-        user = request.user
+    title = request.POST.get('title')
+    content = request.POST.get('content')
+    user = request.user
 
-        # Create a new post object
+    if title and content:
+        # Tworzenie nowego posta
         post = Posts(author=user, title=title, content=content)
-        print("dupa2")
         post.save()
 
         messages.success(request, 'Post added successfully')
-        return redirect('home')
+        return redirect('home')  # Zwróć przekierowanie po udanym dodaniu posta
 
-    return render(request, 'home/home.html')
+    messages.error(request, 'Both title and content are required.')
+    return redirect('home')
