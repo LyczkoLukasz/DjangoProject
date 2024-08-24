@@ -46,26 +46,31 @@
         </div>
     </user_page>
 
-    <p>
+    <div class="text-center">
+        <!-- Adding friend btn -->
+        {% if is_friend is null %}
+            <button id="add-friend-btn" class="btn btn-primary" data-username="{{ user.username }}">Invite to Friends List</button>
+            <p id="friend-status"></p> <!-- adding a class for example class="d-inline-block" make the buttons stay when friend-status is displayed; DONT do that-->
+        {% elif is_friend.from_user == request.user and is_friend.to_user == user and is_friend.is_Friend == False %}
+            {% getSentInvitation request.user user %}
+        {% elif is_friend.from_user == user and is_friend.to_user == request.user and is_friend.is_Friend == False %}
+            {% getReceivedInvitation request.user user %}
+        {% else %}
+            {% getFriend request.user user %}
+        {% endif %}
+
+        <!--
+        <button id="add-friend-btn" data-username="{{ user.username }}">Dodaj znajomego</button>
         <a id="inviteButton" role="button" class="btn btn-success" data-bs-toggle="button" aria-pressed="false"></a>
-        <a id="logout1" class="btn btn-primary icon-link icon-link-hover" href="{% url 'logout' %}">
+        <a id="logout1" class="btn btn-primary icon-link icon-link-hover d-inline-block" href="{% url 'logout' %}">
             Logout
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
             </svg>
         </a>
-    </p>
-    <!-- Adding friend btn -->
-    {% if is_friend is null %}
-        <button id="add-friend-btn" data-username="{{ user.username }}">Dodaj znajomego</button>
-        <p id="friend-status"></p>
-    {% elif is_friend.from_user == request.user and is_friend.to_user == user and is_friend.is_Friend == False %}
-        {% getSentInvitation request.user user %}
-    {% elif is_friend.from_user == user and is_friend.to_user == request.user and is_friend.is_Friend == False %}
-        {% getReceivedInvitation request.user user %}
-    {% else %}
-        {% getFriend request.user user %}
-    {% endif %}
+        -->
+    </div>
+
     
     <script>
     document.getElementById('add-friend-btn').addEventListener('click', function() {
@@ -90,6 +95,7 @@
     </script>
 
 
+    <!--
     <style>
         .btn-success {
             width: 180px;
@@ -107,6 +113,7 @@
         }
         
     </style>
+    -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 </body>

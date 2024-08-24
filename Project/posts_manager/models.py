@@ -8,7 +8,7 @@ class Posts(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author', null=True ) #related_name post_user to list all his posts
     created_at = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=100)
-    content = models.TextField(max_length=1000)
+    content = models.CharField(max_length=1000)
     #post images here 
     likes = models.IntegerField(default=0)
     comments = models.IntegerField(default=0)
@@ -26,7 +26,11 @@ class Comments(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user', null=True)
     post = models.ForeignKey(Posts, on_delete=models.CASCADE, related_name='post', null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    content = models.TextField(max_length=500)
+    content = models.CharField(max_length=500)
 
     def __str__(self):
         return f'Comment created by {self.user} on post {self.post} at {self.created_at}.'
+    
+    def get_Comments():
+        comments = Comments.objects.all().order_by('-created_at')
+        return comments

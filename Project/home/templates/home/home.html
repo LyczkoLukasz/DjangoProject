@@ -15,6 +15,44 @@
     {% endblock %}
 
     <!-- post creating -->
+
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h4>Create Post</h4>
+                    </div>
+                    <div class="card-body">
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Title</label>
+                                <input type="text" id="title" name="title" class="form-control" placeholder="Post title" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="content" class="form-label">Content</label>
+                                <textarea type="text" id="content" name="content" class="form-control" rows="4" placeholder="Post content" required></textarea>
+                            </div>
+                            <div class="d-grid">
+                                <input class="btn btn-primary" type="submit" value="Create Post">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--
+    <div id="create_post">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <input type="text" id="title" name="title" placeholder="title" required>
+            <input type="text" id="content" name="content" placeholder="content" required>
+            <input class="btn btn-primary" type="submit" value="Create Post">
+        </form>
+    </div>
+    -->
     {% if messages %}
         <ul class="messages">
             {% for message in messages %}
@@ -22,24 +60,27 @@
             {% endfor %}
         </ul>
     {% endif %}
-    <div id="create_post">
-        <form action="" method="POST"> <!-- action="url" -->
-            {% csrf_token %}
-            <input type="text" id="title" name="title" placeholder="title" required>
-            <input type="text" id="content" name="content" placeholder="content" required>
-            <input class="btn btn-primary" type="submit" value="Create Post">
-        </form>
-    </div>
 
     <!-- all users listed -->
-    <div id="all_users">
-        {% for user in users %}
-            {% if user.id is request.user.id %}
-                <a class="btn btn-primary" href="{% url 'myProfile' %}">{{ user.username }}</a>
-            {% else %}
-                <a class="btn btn-primary" href="{% url 'profile' user.id %}">{{ user.username }}</a>
-            {% endif %}
-        {% endfor %}
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h4>Users</h4>
+                    </div>
+                    <div class="card-body text-center">
+                        {% for user in users %}
+                            {% if user.id == request.user.id %}
+                                <a class="btn btn-primary m-1" href="{% url 'myProfile' %}">{{ user.username }}</a>
+                            {% else %}
+                                <a class="btn btn-primary m-1" href="{% url 'profile' user.id %}">{{ user.username }}</a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 
@@ -62,7 +103,7 @@
     <!-- posts -->
 
     {% for post in posts %}
-        <div class="container d-flex justify-content-center align-items-center" style="min-height: 50vh; margin-top: 5vh;">
+        <div class="container d-flex justify-content-center align-items-center" style="min-height: 30vh; margin-top: 5vh;">
             <div class="card w-75 text-center">
                 <div class="card-header">
                     <h4>Author: {{ post.author }}</h4>

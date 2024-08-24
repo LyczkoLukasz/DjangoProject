@@ -38,7 +38,7 @@ def friendship_accepted(request):
         friendship.is_Friend = True
         #save object to database
         friendship.save()
-        return JsonResponse({'status': 'ok', 'message': 'Zaproszenie zaakceptowane!'})
+        return JsonResponse({'status': 'ok', 'message': 'Invite accepted!'})
     return JsonResponse({'status': 'error', 'message': 'Nieprawidłowe żądanie.'}, status=400)
 
 @login_required
@@ -67,5 +67,5 @@ def friendship_rejected_or_killed(request):
         
         #delete object from database
         friendship.delete()
-        return JsonResponse({'status': 'ok', 'message': 'deleted successfully!'})
+        return JsonResponse({'status': 'ok', 'message': 'Deleted successfully!'})
     return JsonResponse({'status': 'error', 'message': 'Nieprawidłowe żądanie.'}, status=400)   

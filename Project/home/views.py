@@ -41,6 +41,7 @@ def logoutUser(request):
     logout(request)
     return redirect('home')
 
+@decorators.login_required(login_url='login')
 def home(request):
     users = User.objects.all()
     all_posts = Posts.get_Posts()
@@ -53,7 +54,7 @@ def home(request):
         elif relation.to_user == request.user and relation.is_Friend == True:
             friends.add(relation.from_user.id)
 
-    posts = all_posts.filter(author__id__in=friends)
+    posts = all_posts.filter(Q(author__id__in=friends) | Q(author=request.user))
     
     if request.method == 'POST':
         response = add_post(request)
@@ -138,7 +139,7 @@ def profileEdit(request):
         try:
             user.date_of_birth = date_of_birth
         except:
-            print('Somting wong with date of birth')
+            print('Something wrong with date of birth')
         user.bio = bio
         user.save()
         messages.success(request, 'Profile updated')
@@ -162,9 +163,9 @@ def friend_request(request):
         user = get_object_or_404(User, username=username)
         if not Friendship.objects.filter(from_user=request.user, to_user=user).exists():
             Friendship.objects.create(from_user=request.user, to_user=user, is_Friend=False)
-            return JsonResponse({'status': 'ok', 'message': 'Zaproszenie zostało wysłane.'})
+            return JsonResponse({'status': 'ok', 'message': 'Invite sent!'})
         else:
-            return JsonResponse({'status': 'error', 'message': 'Oczekiwanie na odpowiedź od użytkownika.'})
+            return JsonResponse({'status': 'error', 'message': "Waiting for user's response."})
     return JsonResponse({'status': 'error', 'message': 'Nieprawidłowe żądanie.'}, status=400)
 
 
@@ -175,6 +176,13 @@ def add_post(request):
     user = request.user
 
     if title and content:
+        #Limiting the title and content length
+        if len(title) > 100:
+            messages.error(request, 'Title cannot be longer than 100 characters.')
+            return redirect('home')
+        if len(content) > 1000:
+            messages.error(request, 'Content cannot be longer than 1000 characters.')
+            return redirect('home')
         # Tworzenie nowego posta
         post = Posts(author=user, title=title, content=content)
         post.save()
