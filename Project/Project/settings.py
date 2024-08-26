@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'friendship_manager',
     'posts_manager',
     'notifications',
+    'channels',
 
 ]
 
@@ -75,7 +76,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'Project.wsgi.application'
+ASGI_APPLICATION = 'Project.asgi.application'
 
 
 # Database
@@ -128,3 +129,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'home.User'
 
 DATE_INPUT_FORMATS = ['%Y-%m-%d']
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379)],  # Upewnij się, że Redis jest uruchomiony na tym porcie
+        },
+    },
+}
