@@ -70,6 +70,13 @@ def home(request):
             return response  # Zwróć odpowiedź z add_post
         else:
             return redirect('home')  # Jeśli add_post nie zwróci odpowiedzi, przekieruj na home
+        
+    if request.method == 'POST':
+        com_response = add_comment(request)
+        if com_response:
+            return com_response # Zwróć odpowiedź z add_comment
+        else:
+            return redirect('home')
 
     context = {'users': users, 'posts': posts, 'comments': comments}
     return render(request, 'home/home.html', context)
@@ -199,4 +206,26 @@ def add_post(request):
         return redirect('home')  # Zwróć przekierowanie po udanym dodaniu posta
 
     messages.error(request, 'Both title and content are required.')
+    return redirect('home')
+
+@decorators.login_required
+def add_comment(request):
+    post_id = request.POST.get('post_id')
+    post = get_object_or_404(Posts, pk=post_id)
+    content = request.POST.get('add_comment')
+    user = request.user
+
+    if content:
+        #Limiting the content length
+        if len(content) > 500:
+            messages.error(request, 'Content cannot be longer than 500 characters.')
+            return redirect('home')
+        # Tworzenie nowego komentarza
+        comment = Comments(user=user, post=post, content=content)
+        comment.save()
+
+        messages.success(request, 'Comment added successfully')
+        return redirect('home')
+    
+    messages.error(request, 'Comment cannot be empty.')
     return redirect('home')

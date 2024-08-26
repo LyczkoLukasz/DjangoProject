@@ -151,14 +151,18 @@
                     </div>
                     <div class="modal-footer">
                         <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-10">
-                                    <input type="text" class="form-control" placeholder="Add a comment">
+                            <form action="{% url 'add_comment' %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="post_id" value="{{ post.id }}">
+                                <div class="row">
+                                    <div class="col-10">
+                                        <input type="text" id="add_comment" name="add_comment" class="form-control" placeholder="Add a comment" required>
+                                    </div>
+                                    <div class="col-2">
+                                        <input class="btn btn-secondary w-100" type="submit" value="Add comment">
+                                    </div>
                                 </div>
-                                <div class="col-2">
-                                    <button type="button" class="btn btn-secondary w-100">Add comment</button>
-                                </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>

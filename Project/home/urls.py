@@ -1,8 +1,7 @@
 from django.urls import path, include
 from django.views.generic.base import RedirectView
-
-
 from . import views
+
 
 urlpatterns = [
     path('login/', views.LoginPage, name='login'),
@@ -15,4 +14,5 @@ urlpatterns = [
     path('', RedirectView.as_view(url='/home/')),
     path('profile-edit/', views.profileEdit, name='profileEdit'),
     path('add-friend/', views.friend_request, name='friend_request'),
+    path('add_comment/', views.add_comment, name='add_comment'),
 ]
