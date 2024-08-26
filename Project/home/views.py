@@ -8,7 +8,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from friendship_manager.models import Friendship
 from .models import User
-from django.db.models import Q
+from django.db.models import Q, Count
 from posts_manager.models import Posts, Comments
 from django.http import HttpResponseRedirect
 
@@ -44,17 +44,25 @@ def logoutUser(request):
 @decorators.login_required(login_url='login')
 def home(request):
     users = User.objects.all()
-    all_posts = Posts.get_Posts()
-
+    #posty
+    #all_posts = Posts.get_Posts()
     possible_friends= Friendship.objects.filter(Q(from_user=request.user.id) | Q(to_user=request.user.id)) #lista relacji
     friends = set() #lista znajomych
+    friends.add(request.user.id)
     for relation in possible_friends:
         if relation.from_user == request.user and relation.is_Friend == True:
             friends.add(relation.to_user.id)
         elif relation.to_user == request.user and relation.is_Friend == True:
             friends.add(relation.from_user.id)
 
-    posts = all_posts.filter(Q(author__id__in=friends) | Q(author=request.user))
+    posts = Posts.get_Posts(friends)
+
+    for post in posts:
+        post.views += 1
+        post.save()
+    
+    #comments
+    comments = Comments.get_Comments(posts)
     
     if request.method == 'POST':
         response = add_post(request)
@@ -63,7 +71,7 @@ def home(request):
         else:
             return redirect('home')  # Jeśli add_post nie zwróci odpowiedzi, przekieruj na home
 
-    context = {'users': users, 'posts': posts}
+    context = {'users': users, 'posts': posts, 'comments': comments}
     return render(request, 'home/home.html', context)
 
 @decorators.login_required(login_url='login')
