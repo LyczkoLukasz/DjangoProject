@@ -6,7 +6,6 @@ from django.contrib.auth.hashers import make_password, is_password_usable
 class User(AbstractUser):
     name = models.CharField(max_length=200, null=True)
     date_of_birth = models.DateField(blank=True, null=True)
-    date_of_birth = models.DateField(blank=True, null=True)
     email = models.EmailField(unique=True, null=True)
     bio = models.TextField(null=True)
 
@@ -16,16 +15,9 @@ class User(AbstractUser):
         # Ensure date_of_birth is None if it is an empty string
         if self.date_of_birth == '':
             self.date_of_birth = None
-        # Ensure date_of_birth is None if it is an empty string
-        if self.date_of_birth == '':
-            self.date_of_birth = None
         super().save(*args, **kwargs)
 
     def raw_db_date_of_birth(self):
-        if self.date_of_birth:
-            return self.date_of_birth.strftime('%Y-%m-%d')
-        return None
-
         if self.date_of_birth:
             return self.date_of_birth.strftime('%Y-%m-%d')
         return None

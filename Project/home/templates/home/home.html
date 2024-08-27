@@ -104,7 +104,7 @@
     
     <!-- posts -->
 
-    {% for post in posts %}
+    {% for post, comments in posts_with_comments %}
         <div class="container d-flex justify-content-center align-items-center" style="min-height: 30vh; margin-top: 5vh;">
             <div class="card w-75 text-center">
                 <div class="card-header">
@@ -140,14 +140,17 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        {% for comment in comments %}
-                            {% if comment.post == post %}
-                                <div class="comment" style="border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 10px;">
-                                    <p style="font-size: 12px; margin-bottom: 0px;"><small>{{ comment.created_at }}</small></p>
-                                    <p style="margin-bottom: 0px;"><strong>{{ comment.user }}</strong>: {{ comment.content }}</p>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
+                        <div id="comments-container-{{post.id}}">
+                            {% for comment in comments %}
+                                {% if comment.post == post %}
+                                    <div class="comment" style="border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 10px;">
+                                        <p style="font-size: 12px; margin-bottom: 0px;"><small>{{ comment.created_at }}</small></p>
+                                        <p style="margin-bottom: 0px;"><strong>{{ comment.user }}</strong>: {{ comment.content }}</p>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <button class="btn btn-primary w-100" onclick="loadMoreComments({{ post.id }})">Load more comments</button>
                     </div>
                     <div class="modal-footer">
                         <div class="container-fluid">
@@ -169,6 +172,32 @@
             </div>
         </div>
     {% endfor %}
+
+    <script>
+        let offset = 5; // Initial offset value
+        
+        function loadMoreComments(postId) {
+            fetch(`/get_more_comments/${postId}/${offset}`)
+                .then(response => response.json())
+                .then(data => {
+                    const commentsContainer = document.getElementById(`comments-container-${postId}`);
+                    data.comments.forEach(comment => {
+                        const commentDiv = document.createElement('div');
+                        commentDiv.classList.add('comment');
+                        commentDiv.style.borderBottom = '1px solid #ddd';
+                        commentDiv.style.paddingBottom = '10px';
+                        commentDiv.style.marginBottom = '10px';
+                        commentDiv.innerHTML = `
+                            <p style="font-size: 12px; margin-bottom: 0px;"><small>${comment.created_at}</small></p>
+                            <p style="margin-bottom: 0px;"><strong>${comment.user}</strong>: ${comment.content}</p>
+                        `;
+                        commentsContainer.appendChild(commentDiv);
+                    });
+                    offset += 5; // Increment offset for next batch
+                })
+                .catch(error => console.error('Error loading more comments:', error));
+        }
+    </script>
     
     <script>
         const user_id = {{ user.id }};

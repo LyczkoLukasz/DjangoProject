@@ -15,4 +15,5 @@ urlpatterns = [
     path('profile-edit/', views.profileEdit, name='profileEdit'),
     path('add-friend/', views.friend_request, name='friend_request'),
     path('add_comment/', views.add_comment, name='add_comment'),
+    path('get_more_comments/<int:post_id>/<int:offset>/', views.get_more_comments, name='get_more_comments'),
 ]

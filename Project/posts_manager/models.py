@@ -32,6 +32,6 @@ class Comments(models.Model):
     def __str__(self):
         return f'Comment created by {self.user} on post {self.post} at {self.created_at}.'
     
-    def get_Comments(specific_posts):
-        comments = Comments.objects.filter(post__in=specific_posts).order_by('-created_at')
+    def get_comments_for_post(post, limit=5, offset=0):
+        comments = Comments.objects.filter(post=post).order_by('-created_at')[offset:offset+limit]
         return comments

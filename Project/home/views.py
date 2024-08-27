@@ -61,8 +61,12 @@ def home(request):
         post.views += 1
         post.save()
     
-    #comments
-    comments = Comments.get_Comments(posts)
+    #comments (5 newest comments)
+    posts_with_comments = []
+    for post in posts:
+        post_comments = Comments.get_comments_for_post(post)
+        posts_with_comments.append((post, post_comments))
+    
     
     if request.method == 'POST':
         response = add_post(request)
@@ -78,7 +82,7 @@ def home(request):
         else:
             return redirect('home')
 
-    context = {'users': users, 'posts': posts, 'comments': comments}
+    context = {'users': users, 'posts': posts, 'posts_with_comments': posts_with_comments}
     return render(request, 'home/home.html', context)
 
 @decorators.login_required(login_url='login')
@@ -229,3 +233,18 @@ def add_comment(request):
     
     messages.error(request, 'Comment cannot be empty.')
     return redirect('home')
+
+
+def get_more_comments(request, post_id, offset):
+    offset = int(offset)
+    comments = Comments.objects.filter(post_id=post_id).order_by('-created_at')[offset:offset+5]
+    #comments = Comments.get_comments_for_post(post_id, limit=5, offset=offset)
+    comments_data = [
+        {
+            'user': comment.user.username,
+            'content': comment.content,
+            'created_at': comment.created_at.strftime('%b. %d, %Y, %-I:%M %p').replace('AM', 'a.m.').replace('PM', 'p.m.')
+        }
+        for comment in comments
+    ]
+    return JsonResponse({'comments': comments_data})
