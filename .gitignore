@@ -4,3 +4,6 @@ venv/
 data.py
 Project/data.py
 Project/Project/data.py
+Dockerfile
+docker-compose.yml
+requirements.txt
