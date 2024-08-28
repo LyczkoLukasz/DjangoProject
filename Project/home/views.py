@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404
 from friendship_manager.models import Friendship
 from .models import User
 from django.db.models import Q, Count
-from posts_manager.models import Posts, Comments
+from posts_manager.models import Posts, Comments, Likes
 from django.http import HttpResponseRedirect
 
 
@@ -64,8 +64,9 @@ def home(request):
     #comments (5 newest comments)
     posts_with_comments = []
     for post in posts:
+        liked = Likes.objects.filter(user=request.user, post=post).exists()
         post_comments = Comments.get_comments_for_post(post)
-        posts_with_comments.append((post, post_comments))
+        posts_with_comments.append((post, liked, post_comments))
     
     
     if request.method == 'POST':
@@ -82,7 +83,7 @@ def home(request):
         else:
             return redirect('home')
 
-    context = {'users': users, 'posts': posts, 'posts_with_comments': posts_with_comments}
+    context = {'users': users, 'posts_with_comments': posts_with_comments}
     return render(request, 'home/home.html', context)
 
 @decorators.login_required(login_url='login')
@@ -248,3 +249,25 @@ def get_more_comments(request, post_id, offset):
         for comment in comments
     ]
     return JsonResponse({'comments': comments_data})
+
+@decorators.login_required
+def toggle_like(request, post_id):
+    post = get_object_or_404(Posts, pk=post_id)
+    user = request.user
+
+    # Check if the like already exists
+    existing_like = Likes.objects.filter(user=user, post=post).first()
+
+    if existing_like:
+        # If the like exists, delete it (unlike)
+        existing_like.delete()
+        liked = False
+    else:
+        # If the like does not exist, create it (like)
+        Likes.objects.create(user=user, post=post)
+        liked = True
+
+    # Count the total number of likes for the post
+    like_count = Likes.objects.filter(post=post).count()
+
+    return JsonResponse({'liked': liked, 'like_count': like_count})

@@ -9,6 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'home/style_home.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     {% block template %}
@@ -104,7 +105,7 @@
     
     <!-- posts -->
 
-    {% for post, comments in posts_with_comments %}
+    {% for post, liked, comments in posts_with_comments %}
         <div class="container d-flex justify-content-center align-items-center" style="min-height: 30vh; margin-top: 5vh;">
             <div class="card w-75 text-center">
                 <div class="card-header">
@@ -117,8 +118,12 @@
                 </div>
                 <div class="card-footer d-flex justify-content-around">
                     <div>
-                        <p style="margin-right: 5px; display: inline-block">Likes: {{post.likes}}</p>
-                        <a class="btn btn-primary" style="display: inline-block">Like</a>
+                        <p id="like-count-{{ post.id }}" style="margin-right: 5px; display: inline-block">Likes: {{post.likes_count}}</p>
+                        {% if liked %}
+                            <a id="like-button-{{ post.id }}" class="btn btn-danger" style="display: inline-block" onclick="toggleLike({{ post.id }})">Unlike</a>
+                        {% else %}
+                            <a id="like-button-{{ post.id }}" class="btn btn-primary" style="display: inline-block" onclick="toggleLike({{ post.id }})">Like</a>
+                        {% endif %}
                     </div>
                     <div>
                         <p style="margin-right: 5px; display: inline-block">Comments: {{post.comment_count}}</p>
@@ -172,6 +177,29 @@
             </div>
         </div>
     {% endfor %}
+    
+
+    <script>
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        function toggleLike(postId) {
+            $.ajax({
+                url: '/toggle_like/' + postId + '/',
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrftoken // Ensure you include the CSRF token
+                },
+                success: function(response) {
+                    if (response.liked) {
+                        $('#like-button-' + postId).removeClass('btn-primary').addClass('btn-danger').text('Unlike');
+                    } else {
+                        $('#like-button-' + postId).removeClass('btn-danger').addClass('btn-primary').text('Like');
+                    }
+                    $('#like-count-' + postId).text('Likes: ' + response.like_count);
+                    console.log(response);
+                }
+            });
+        }
+    </script>
 
     <script>
         let offset = 5; // Initial offset value

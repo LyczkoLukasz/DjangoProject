@@ -11,16 +11,19 @@ class Posts(models.Model):
     title = models.CharField(max_length=100)
     content = models.CharField(max_length=1000)
     #post images here 
-    likes = models.IntegerField(default=0)
-    #comments counter replaced with annotate in line 23
+    #likes counter replaced with annotate in line 25
+    #comments counter replaced with annotate in line 24
     views = models.IntegerField(default=0)
 
 
     def __str__(self):
-        return f'Post {self.title} created by {self.user} at {self.created_at}.'
+        return f'Post {self.title} created by {self.author} at {self.created_at}.'
     
     def get_Posts(specific_authors):
-        posts = Posts.objects.filter(author__in=specific_authors).annotate(comment_count=Count('comments')).order_by('-created_at')
+        posts = Posts.objects.filter(author__in=specific_authors).annotate(
+            likes_count=Count('likes', distinct=True),
+            comment_count=Count('comments')
+            ).order_by('-created_at')
         return posts
     
 class Comments(models.Model):
@@ -35,3 +38,10 @@ class Comments(models.Model):
     def get_comments_for_post(post, limit=5, offset=0):
         comments = Comments.objects.filter(post=post).order_by('-created_at')[offset:offset+limit]
         return comments
+    
+class Likes(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='liked_posts')
+    post = models.ForeignKey(Posts, on_delete=models.CASCADE, related_name='likes')
+
+    def __str__(self):
+        return f'Like by {self.user} on post {self.post}.'
