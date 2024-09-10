@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import os
+
 from pathlib import Path
 from .data import DBpasswords
 
@@ -26,12 +28,16 @@ SECRET_KEY = 'django-insecure-u-mq_tk)@&3m%=k^!_yh&%-z82r1)(c%vph_j93@q#f6w5mpnl
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    'channels',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,8 +50,10 @@ INSTALLED_APPS = [
     'friendship_manager',
     'posts_manager',
     'notifications',
-    'channels',
 
+
+
+    
 ]
 
 MIDDLEWARE = [
@@ -119,7 +127,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+
+# Jeśli używasz collectstatic, ustaw też STATIC_ROOT
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Jeśli używasz plików statycznych z katalogów aplikacji
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -134,7 +150,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [('127.0.0.1', 6379)],  # Upewnij się, że Redis jest uruchomiony na tym porcie
+            'hosts': [('redis', 6379)],  # Upewnij się, że Redis jest uruchomiony na tym porcie
         },
     },
 }

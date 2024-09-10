@@ -71,3 +71,8 @@
 #searchbar{
     width: 200px;
 }
+
+.small-badge {
+    transform: scale(0.75); /* Adjust the scale factor as needed */
+    transform-origin: top right; /* Ensure the badge scales from the top-right corner */
+}

@@ -50,10 +50,13 @@
 
                     <div id="d3" class="col-3">
                         <div class="dropdown">
-                            <a id="nav_button3" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a id="nav_button3" class="btn dropdown-toggle position-relative" data-bs-toggle="dropdown" aria-expanded="false">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
                                     <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6"/>
                                 </svg>
+                                {% if numberOfNotifications %}
+                                    <span class="position-absolute top-30 start-90 translate-middle badge rounded-pill bg-danger small-badge">{{ numberOfNotifications }}</span>
+                                {% endif %}
                             </a>
                             {% latest_notifications %}
                         </div>
@@ -72,11 +75,12 @@
             </div>
             
             <div class="right-elements">
+                <h1>{% numberOfUnreadNotifications request.user %}</h1>
                 <!-- name -->
                 <p style="margin-top: 8px; margin-bottom: 8px; margin-right: 4px;">
                     {% if not request.user.first_name %}
                         {% if not request.user.last_name %}
-                            {{request.user.username}}
+                            {{request.user.id}}
                         {% else %}
                             {{request.user.last_name}}
                         {% endif %}
@@ -144,7 +148,62 @@
 
         </div>
 
+        <script type="text/javascript">
+            // Setup WebSocket connection
+
+            console.log("{{request.user}}"");
+
+            let url= 'ws://localhost:8000/ws/notifications/';
+        
+            let ws = new WebSocket(url);
+        
+            ws.onopen = function() {
+                console.log("WebSocket connection established from banner");
+            };
+        
+            ws.onmessage = function(e) {
+                let data = JSON.parse(e.data);
+                console.log("Data: ", data);
+            
+                // Find the bell icon based on 'a' tag id
+                let bell = document.querySelector("#nav_button3");
+                
+                // Check if there is already a badge present
+                let badge = bell.querySelector(".badge");
+            
+                if (badge) {
+                    // If a badge already exists, update its number
+                    let currentCount = parseInt(badge.innerText);
+                    badge.innerText = currentCount + 1;
+                } else {
+                    // If no badge is present, create a new one
+                    let badgeSpan = document.createElement("span");
+                    badgeSpan.className = "position-absolute top-30 start-90 translate-middle badge rounded-pill bg-danger";
+                    badgeSpan.innerHTML = `1<span class="visually-hidden">unread messages</span>`;
+                    
+                    // Add the badge to the bell icon
+                    bell.appendChild(badgeSpan);
+                }
+            };
+        
+            ws.onerror = function(e) {
+                console.error("WebSocket error:", e);
+            };
+        
+            ws.onclose = function(e) {
+                console.log("WebSocket connection closed:", e);
+            };
+        </script>
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    
+        <style>
+            .small-badge {
+              transform: scale(0.75); /* Adjust the scale factor as needed /
+              transform-origin: top right; / Ensure the badge scales from the top-right corner */
+            }
+        </style>
+    
     </body>
 </html>
 

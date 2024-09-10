@@ -17,4 +17,5 @@ urlpatterns = [
     path('add_comment/', views.add_comment, name='add_comment'),
     path('get_more_comments/<int:post_id>/<int:offset>/', views.get_more_comments, name='get_more_comments'),
     path('toggle_like/<int:post_id>/', views.toggle_like, name='toggle_like'),
+    path('test/', views.test_view, name='test'),
 ]

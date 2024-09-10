@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
 from .models import Friendship
 from home.models import User
+from notifications.models import Notification
 
 # Create your views here.
 @login_required
@@ -38,6 +39,9 @@ def friendship_accepted(request):
         friendship.is_Friend = True
         #save object to database
         friendship.save()
+
+        #sending a notification to the user who sent the invitation
+        Notification.objects.create(user=sender, title='Invitation Accepted!', body=f'{receiver.username} accepted your invitation!')
         return JsonResponse({'status': 'ok', 'message': 'Invite accepted!'})
     return JsonResponse({'status': 'error', 'message': 'Nieprawidłowe żądanie.'}, status=400)
 

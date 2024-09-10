@@ -1,9 +1,10 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
-from .models import Notification
+#from .models import Notification
 
 class NotificationConsumer(AsyncWebsocketConsumer):
     async def connect(self):
+        
         # Każdy użytkownik ma swoją unikalną grupę WebSocket
         self.group_name = f'notifications_{self.scope["user"].id}'
 
@@ -30,7 +31,8 @@ class NotificationConsumer(AsyncWebsocketConsumer):
 
         # Wyślij wiadomość przez WebSocket
         await self.send(text_data=json.dumps({
-            'title': notification.title,
-            'body': notification.body,
-            'created_at': str(notification.created_at),
+            'title': notification['title'],
+            'body': notification['body'],
+            'created_at': notification['created_at'],
         }))
+

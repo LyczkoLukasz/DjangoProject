@@ -11,6 +11,10 @@ from .models import User
 from django.db.models import Q, Count
 from posts_manager.models import Posts, Comments, Likes
 from django.http import HttpResponseRedirect
+from posts_manager.models import Posts, Comments
+from django.http import HttpResponseRedirect,HttpResponse
+
+
 
 
 
@@ -271,3 +275,6 @@ def toggle_like(request, post_id):
     like_count = Likes.objects.filter(post=post).count()
 
     return JsonResponse({'liked': liked, 'like_count': like_count})
+
+def test_view(request):
+    return HttpResponse(f"User ID: {request.user.id}, Username: {request.user.username}")

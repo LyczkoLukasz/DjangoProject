@@ -3,6 +3,7 @@ from friendship_manager.models import Friendship
 from notifications.models import Notification
 from django.db.models import Q
 
+from notifications.models import Notification
 
 register = template.Library()
 
@@ -29,3 +30,8 @@ def getFriend(user, userProfilePK):
 def latest_notifications():
     notifications = Notification.objects.order_by('-created_at')[:4]
     return {'notifications': notifications}
+
+@register.inclusion_tag('home/base/banner.html')
+def numberOfUnreadNotifications(user):
+    numberOfNotifications = Notification.getNumberOfUnreadNotifications(user)
+    return {'numberOfNotifications': numberOfNotifications}

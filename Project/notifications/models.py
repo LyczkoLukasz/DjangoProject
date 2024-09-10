@@ -33,3 +33,7 @@ class Notification(models.Model):
             }
         )
     
+    def getNumberOfUnreadNotifications(user_provided):
+        
+        return Notification.objects.filter(user=user_provided, is_read=False).count()
+    

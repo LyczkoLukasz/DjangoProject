@@ -7,7 +7,7 @@ from .models import Notification
 @login_required
 def notifications(request):
 
-    notifications = Notification.objects.all().order_by('-created_at')
+    notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
     context = {'notifications': notifications}
 
     return render(request, 'notifications/index.html', context)
