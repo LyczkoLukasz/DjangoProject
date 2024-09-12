@@ -46,14 +46,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
 
+    'captcha',
     'home',
     'friendship_manager',
     'posts_manager',
     'notifications',
 
 
-
-    
 ]
 
 MIDDLEWARE = [

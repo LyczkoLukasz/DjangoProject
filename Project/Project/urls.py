@@ -28,6 +28,7 @@ urlpatterns = [
     path('', include('home.urls')),
     path('friends/', include('friendship_manager.urls')),
     path('notifications/', include('notifications.urls')),
+    path('captcha/', include('captcha.urls')),
 ]
 
 if settings.DEBUG:

@@ -75,7 +75,6 @@
             </div>
             
             <div class="right-elements">
-                <h1>{% numberOfUnreadNotifications request.user %}</h1>
                 <!-- name -->
                 <p style="margin-top: 8px; margin-bottom: 8px; margin-right: 4px;">
                     {% if not request.user.first_name %}
@@ -151,9 +150,9 @@
         <script type="text/javascript">
             // Setup WebSocket connection
 
-            console.log("{{request.user}}"");
+            console.log("{{request.user}}");
 
-            let url= 'ws://localhost:8000/ws/notifications/';
+            let url= 'ws://' + window.location.host + '/ws/notifications/';
         
             let ws = new WebSocket(url);
         

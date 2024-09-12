@@ -10,12 +10,18 @@ from friendship_manager.models import Friendship
 from .models import User
 from django.db.models import Q, Count
 from posts_manager.models import Posts, Comments, Likes
-from django.http import HttpResponseRedirect
 from posts_manager.models import Posts, Comments
 from django.http import HttpResponseRedirect,HttpResponse
+from captcha.fields import CaptchaField
+from django import forms
 
 
-
+class RegisterForm(forms.Form):
+    username = forms.CharField(max_length=100)
+    email = forms.EmailField()
+    password1 = forms.CharField(widget=forms.PasswordInput())
+    password2 = forms.CharField(widget=forms.PasswordInput())
+    captcha = CaptchaField()
 
 
 def LoginPage(request):
@@ -109,24 +115,29 @@ def myProfile(request):
 def registerPage(request):
 
     if request.method == 'POST':
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        password = request.POST.get('password1')
-        password2 = request.POST.get('password2')
-        User = get_user_model()
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            email = form.cleaned_data.get('email')
+            password = form.cleaned_data.get('password1')
+            password2 = form.cleaned_data.get('password2')
+            User = get_user_model()
 
-        if password != password2:
-            return redirect('register')
-        else:
-            if User.objects.filter(email=email).exists() or User.objects.filter(username=username).exists():
-                messages.error(request, 'Email or username already exists')
+            if password != password2:
+                messages.error(request, 'Passwords do not match')
+                return redirect('register')
             else:
-                user = User.objects.create(username=username, email=email, password=make_password(password))
-                user.save()
-                messages.success(request, 'Account was created for ' + username)
-                return redirect('home')
+                if User.objects.filter(email=email).exists() or User.objects.filter(username=username).exists():
+                    messages.error(request, 'Email or username already exists')
+                else:
+                    user = User.objects.create(username=username, email=email, password=make_password(password))
+                    user.save()
+                    messages.success(request, 'Account was created for ' + username)
+                    return redirect('home')
+    else:
+        form = RegisterForm()
 
-    return render(request, 'home/signup_page.html')
+    return render(request, 'home/signup_page.html', {'form': form})
 
 @decorators.login_required(login_url='login')
 def profileEdit(request):
