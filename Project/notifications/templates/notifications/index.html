@@ -19,7 +19,7 @@
             <div class="col-md-6 offset-md-3">
                 <ul class="list-group">
                     {% for notification in notifications %}
-                    <li class="list-group-item">
+                    <li class="list-group-item" style="background-color: {% if notification.is_read %}green {% else %} blue {% endif %}">
                         <h2>{{ notification }}</h2>
                         <p>{{ notification.body }}</p>
                         <p>{{ notification.created_at }}</p>

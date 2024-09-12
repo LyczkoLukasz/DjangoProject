@@ -41,7 +41,7 @@ def friendship_accepted(request):
         friendship.save()
 
         #sending a notification to the user who sent the invitation
-        Notification.objects.create(user=sender, title='Invitation Accepted!', body=f'{receiver.username} accepted your invitation!')
+        Notification.objects.create(user=sender, title='Invitation Accepted!', body=f'{receiver.username} accepted your invitation!', type='FC')
         return JsonResponse({'status': 'ok', 'message': 'Invite accepted!'})
     return JsonResponse({'status': 'error', 'message': 'Nieprawidłowe żądanie.'}, status=400)
 
@@ -71,5 +71,7 @@ def friendship_rejected_or_killed(request):
         
         #delete object from database
         friendship.delete()
+        #sending a notification to the user who sent the invitation
+        Notification.objects.create(user=sender, title='Invitation Rejected or killed!', body=f'{receiver.username} rejected or killed your invitation!', type='FC')
         return JsonResponse({'status': 'ok', 'message': 'Deleted successfully!'})
     return JsonResponse({'status': 'error', 'message': 'Nieprawidłowe żądanie.'}, status=400)   

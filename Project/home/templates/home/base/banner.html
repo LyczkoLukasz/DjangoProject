@@ -58,11 +58,11 @@
                                     <span class="position-absolute top-30 start-90 translate-middle badge rounded-pill bg-danger small-badge">{{ numberOfNotifications }}</span>
                                 {% endif %}
                             </a>
-                            {% latest_notifications %}
+                            {% latest_notifications request.user %}
                         </div>
                     </div>
 
-                    <!--
+                        <!--
                     <div id="d3" class="col-3">
                         <a id="nav_button3" class="btn">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
