@@ -19,7 +19,10 @@ class Notification(models.Model):
     body = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)
+    #type defines what kind of notification it is
     type = models.CharField(max_length=2, choices=NotificationType.choices, default=NotificationType.GENERAL_NOTIFICATION)
+    #hook_id is used to store the id of the object that the notification is related to
+    hook_id = models.CharField(max_length=100, blank=True, null=True)
 
 
     def __str__(self):

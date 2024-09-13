@@ -1,0 +1,17 @@
+{% for notification in notifications %}
+    {% if notification.type == 'FC' %}
+    <a href="{% url 'profile' notification.hook_id %}">
+        <li class="list-group-item" style="background-color: {% if notification.is_read %}green {% else %} blue {% endif %}">
+            <h2>{{ notification }}</h2>
+            <p>{{ notification.body }}</p>
+            <p>{{ notification.created_at }}</p>
+        </li>
+    </a>
+    {% elif notification.type == 'NP' %}
+    <li class="list-group-item" style="background-color: {% if notification.is_read %}green {% else %} blue {% endif %}">
+        <h2>{{ notification }}</h2>
+        <p>{{ notification.body }}</p>
+        <p>{{ notification.created_at }}</p>
+    </li>
+    {% endif %}
+{% endfor %}
