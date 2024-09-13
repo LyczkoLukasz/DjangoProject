@@ -1,0 +1,177 @@
+<!-- Post Modal -->
+<div class="modal fade" id="postModal-{{post.id}}" tabindex="-1" aria-labelledby="postModalLabel-{{post.id}}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content" style="height: 80vh;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="postModalLabel-{{post.id}}"><strong>{{ post.title }}</strong></h5>
+                <h4>Author: {{ post.author }}</h4>
+                <p>Created at: {{ post.created_at }}</p>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="postModalBody-{{post.id}}">
+                <p>{{ post.content }}</p>
+            </div>
+            <div class="modal-footer d-flex justify-content-around">
+                <div>
+                    <p id="like-count-{{ post.id }}" style="margin-right: 5px; display: inline-block">Likes: {{like_count}}</p>
+                    {% if liked %}
+                        <a id="like-button-{{ post.id }}" class="btn btn-danger" style="display: inline-block" onclick="toggleLike({{ post.id }})">Unlike</a>
+                    {% else %}
+                        <a id="like-button-{{ post.id }}" class="btn btn-primary" style="display: inline-block" onclick="toggleLike({{ post.id }})">Like</a>
+                    {% endif %}
+                </div>
+                <div>
+                    <p id="comment-count-{{ post.id }}" style="margin-right: 5px; display: inline-block">Comments: {{comment_count}}</p>
+                    <a class="btn btn-primary" style="display: inline-block" data-bs-toggle="modal" data-bs-target="#commentsModal-{{post.id}}" data-bs-dismiss="modal">Comment</a>
+                </div>
+                <div>
+                    <p style="margin-right: 5px; display: inline-block">Views: {{post.views}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Comments Modal -->
+<div class="modal fade" id="commentsModal-{{post.id}}" tabindex="-1" aria-labelledby="commentsModalLabel-{{post.id}}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl" style="max-width: 65%;">
+        <div class="modal-content" style="height: 80vh;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="commentsModalLabel-{{post.id}}">Comments</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="commentsModalBody-{{post.id}}">
+                <div id="comments-container-{{post.id}}">
+                    {% for comment in comments %}
+                        {% if comment.post == post %}
+                            <div class="comment" style="border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 10px;">
+                                <p style="font-size: 12px; margin-bottom: 0px;"><small>{{ comment.created_at }}</small></p>
+                                <p style="margin-bottom: 0px;"><strong>{{ comment.user }}</strong>: {{ comment.content }}</p>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <button class="btn btn-primary w-100" onclick="loadMoreComments({{ post.id }})">Load more comments</button>
+            </div>
+            <div class="modal-footer">
+                <div class="container-fluid">
+                    <form action="{% url 'add_comment' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="post_id" id="commentPostId" value="{{ post.id }}">
+                        <div class="row">
+                            <div class="col-10">
+                                <input type="text" id="add_comment" name="add_comment" class="form-control" placeholder="Add a comment" required>
+                            </div>
+                            <div class="col-2">
+                                <input class="btn btn-secondary w-100" type="submit" value="Add comment">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- post and comments modals functionality -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // adding event listener to all comments modals
+        document.querySelectorAll('[id^="commentsModal-"]').forEach(function(modal) {
+            modal.addEventListener('hidden.bs.modal', function(event) {
+                // taking the postId from the modal id
+                const postId = event.target.id.split('-')[1];
+                // deleting all backdrops before opening post modal
+                const modals = document.querySelectorAll('.modal.show');
+                if (modals.length === 0) {
+                    document.body.classList.remove('modal-open');
+                    // deleting all backdrops before opening post modal
+                    document.querySelectorAll('.modal-backdrop').forEach(function(backdrop) {
+                        backdrop.remove();
+                    });
+                }
+                // added delay before reopening post modal
+                setTimeout(function() {
+                    // deleting all backdrops before opening post modal
+                    document.querySelectorAll('.modal-backdrop').forEach(function(backdrop) {
+                        backdrop.remove();
+                    });
+                    const postModal = document.getElementById(`postModal-${postId}`);
+                    const modalInstance = new bootstrap.Modal(postModal);
+                    modalInstance.show();
+                }, 400); //400 ms delay
+            });
+        });
+
+        // adding event listener to all post modals
+        document.querySelectorAll('[id^="postModal-"]').forEach(function(modal) {
+            modal.addEventListener('hidden.bs.modal', function(event) {
+                // deleting all backdrops again
+                const modals = document.querySelectorAll('.modal.show');
+                if (modals.length === 0) {
+                    document.body.classList.remove('modal-open');
+                    // and again deleting all backdrops
+                    document.querySelectorAll('.modal-backdrop').forEach(function(backdrop) {
+                        backdrop.remove();
+                    });
+                }
+            });
+        });
+    });
+    // like status
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    function toggleLike(postId) {
+        console.log('toggleLike called for postId:', postId); // Dodaj log do konsoli
+        $.ajax({
+            url: '/toggle_like/' + postId + '/',
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrftoken // Ensure you include the CSRF token
+            },
+            success: function(response) {
+                console.log('AJAX success response:', response); // Dodaj log do konsoli
+                if (response.liked) {
+                    $('#like-button-' + postId).removeClass('btn-primary').addClass('btn-danger').text('Unlike');
+                } else {
+                    $('#like-button-' + postId).removeClass('btn-danger').addClass('btn-primary').text('Like');
+                }
+                $('#like-count-' + postId).text('Likes: ' + response.like_count);
+                $('#comment-count-' + postId).text('Comments: ' + response.comment_count);
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX error:', status, error); // Dodaj log do konsoli
+            }
+        });
+    }
+</script>
+
+<!-- comments -->
+<script>
+    let offset = 5; // Initial offset value
+    
+    function loadMoreComments(postId) {
+        fetch(`/get_more_comments/${postId}/${offset}`)
+            .then(response => response.json())
+            .then(data => {
+                const commentsContainer = document.getElementById(`comments-container-${postId}`);
+                data.comments.forEach(comment => {
+                    const commentDiv = document.createElement('div');
+                    commentDiv.classList.add('comment');
+                    commentDiv.style.borderBottom = '1px solid #ddd';
+                    commentDiv.style.paddingBottom = '10px';
+                    commentDiv.style.marginBottom = '10px';
+                    commentDiv.innerHTML = `
+                        <p style="font-size: 12px; margin-bottom: 0px;"><small>${comment.created_at}</small></p>
+                        <p style="margin-bottom: 0px;"><strong>${comment.user}</strong>: ${comment.content}</p>
+                    `;
+                    commentsContainer.appendChild(commentDiv);
+                });
+                offset += 5; // Increment offset for next batch
+            })
+            .catch(error => console.error('Error loading more comments:', error));
+    }
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

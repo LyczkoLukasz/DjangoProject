@@ -8,6 +8,7 @@ from .models import Notification
 def notifications(request):
 
     notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
-    context = {'notifications': notifications}
+    context = {'notifications': notifications, 'request': request}
 
     return render(request, 'notifications/index.html', context)
+

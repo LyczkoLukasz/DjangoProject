@@ -284,8 +284,9 @@ def toggle_like(request, post_id):
 
     # Count the total number of likes for the post
     like_count = Likes.objects.filter(post=post).count()
+    comment_count = Comments.objects.filter(post=post).count()
 
-    return JsonResponse({'liked': liked, 'like_count': like_count})
+    return JsonResponse({'liked': liked, 'like_count': like_count, 'comment_count': comment_count})
 
 def test_view(request):
     return HttpResponse(f"User ID: {request.user.id}, Username: {request.user.username}")

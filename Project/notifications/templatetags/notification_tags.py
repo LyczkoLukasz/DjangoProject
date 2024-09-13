@@ -35,4 +35,4 @@ def getListOfNotifitcations(user):
     
 
 
-    return {'notifications': notifications}
+    return {'notifications': notifications, 'user': user}
