@@ -12,6 +12,7 @@ from django.db.models import Q, Count
 from posts_manager.models import Posts, Comments, Likes
 from posts_manager.models import Posts, Comments
 from django.http import HttpResponseRedirect,HttpResponse
+from notifications.models import Notification
 from captcha.fields import CaptchaField
 from django import forms
 
@@ -221,6 +222,15 @@ def add_post(request):
         # Tworzenie nowego posta
         post = Posts(author=user, title=title, content=content)
         post.save()
+
+        list_of_friends = Friendship.objects.filter((Q(from_user=user) | Q(to_user=user)) & Q(is_Friend=True))
+        for friend in list_of_friends:
+            if friend.from_user == user:
+                toWhoSendNotification = friend.to_user
+            else:
+                toWhoSendNotification = friend.from_user
+            Notification.objects.create(user=toWhoSendNotification, title='New post!', body=f'{user.username} added a new post!', type='NP', hook_id=post.id)
+
 
         messages.success(request, 'Post added successfully')
         return redirect('home')  # Zwróć przekierowanie po udanym dodaniu posta
