@@ -1,6 +1,8 @@
 import os
 import django
 
+#Package imports below MUST be in such order, otherwise django applications are loaded in the wrong order which provide to an error
+
 from django.core.asgi import get_asgi_application
 
 from channels.auth import AuthMiddlewareStack

@@ -1,7 +1,87 @@
-<div class="dropdown-menu" aria-labelledby="nav_button3">
+<div class="dropdown-menu" aria-labelledby="nav_button3" style="min-width: 300px; max-width: 400px;">
     <!-- Dropdown menu items go here -->
+    {% if notifications %}
     {% for notification in notifications %}
-        <a class="dropdown-item" href="#">{{ notification.title }}</a>
+    {% if notification.type == 'FC' %}
+    <a class="dropdown-item notification-item" href="{% url 'profile' notification.hook_id %}"
+        data-id="{{ notification.id }}"
+        style="white-space: normal; padding: 10px 15px; border-bottom: 1px solid #e9ecef;">
+        <div style="font-weight: bold; margin-bottom: 5px;">{{ notification.title }}</div>
+        <div style="font-size: 0.9em; color: #6c757d; margin-bottom: 5px;">{{ notification.body|truncatewords:15 }}
+        </div>
+        <div style="font-size: 0.8em; color: #adb5bd;">{{ notification.created_at|timesince }} ago</div>
+    </a>
+    {% elif notification.type == 'NP' or notification.type == 'NC' or notification.type == 'NL' %}
+    <a class="dropdown-item notification-item" href="{% url 'notifications' %}" data-id="{{ notification.id }}"
+        style="white-space: normal; padding: 10px 15px; border-bottom: 1px solid #e9ecef;">
+        <div style="font-weight: bold; margin-bottom: 5px;">{{ notification.title }}</div>
+        <div style="font-size: 0.9em; color: #6c757d; margin-bottom: 5px;">{{ notification.body|truncatewords:15 }}
+        </div>
+        <div style="font-size: 0.8em; color: #adb5bd;">{{ notification.created_at|timesince }} ago</div>
+    </a>
+    {% else %}
+    <a class="dropdown-item notification-item" href="{% url 'notifications' %}" data-id="{{ notification.id }}"
+        style="white-space: normal; padding: 10px 15px; border-bottom: 1px solid #e9ecef;">
+        <div style="font-weight: bold; margin-bottom: 5px;">{{ notification.title }}</div>
+        <div style="font-size: 0.9em; color: #6c757d; margin-bottom: 5px;">{{ notification.body|truncatewords:15 }}
+        </div>
+        <div style="font-size: 0.8em; color: #adb5bd;">{{ notification.created_at|timesince }} ago</div>
+    </a>
+    {% endif %}
     {% endfor %}
-    <a class="dropdown-item" href="{% url 'notifications' %}">Show all notifications</a>
+    {% else %}
+    <div class="dropdown-item" style="padding: 10px 15px; color: #6c757d;">
+        No new notifications
+    </div>
+    {% endif %}
+    <a class="dropdown-item" href="{% url 'notifications' %}"
+        style="background-color: #f8f9fa; font-weight: bold; text-align: center; padding: 10px 15px; border-top: 2px solid #dee2e6;">Show
+        all notifications</a>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const notificationItems = document.querySelectorAll('.notification-item');
+
+        notificationItems.forEach(item => {
+            item.addEventListener('click', function (e) {
+                e.preventDefault();
+                const notificationId = this.getAttribute('data-id');
+                const href = this.getAttribute('href');
+
+                // Send request to mark as read
+                fetch(`/notifications/mark-read/${notificationId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'),
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(response => {
+                        // Navigate regardless of success/failure
+                        window.location.href = href;
+                    })
+                    .catch(error => {
+                        console.error('Error marking notification as read:', error);
+                        window.location.href = href;
+                    });
+            });
+        });
+
+        // Helper function to get CSRF token
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    });
+</script>

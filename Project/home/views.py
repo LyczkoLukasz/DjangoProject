@@ -3,15 +3,14 @@ from .models import User
 from django.contrib import messages
 from django.contrib.auth import get_user_model, decorators, login, logout
 from django.contrib.auth.hashers import make_password
-from time import sleep
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from friendship_manager.models import Friendship
 from .models import User
-from django.db.models import Q, Count
+from django.db.models import Q
 from posts_manager.models import Posts, Comments, Likes
 from posts_manager.models import Posts, Comments
-from django.http import HttpResponseRedirect,HttpResponse
+from django.http import HttpResponse
 from notifications.models import Notification
 from captcha.fields import CaptchaField
 from django import forms
@@ -199,6 +198,10 @@ def friend_request(request):
         user = get_object_or_404(User, username=username)
         if not Friendship.objects.filter(from_user=request.user, to_user=user).exists():
             Friendship.objects.create(from_user=request.user, to_user=user, is_Friend=False)
+            
+            # Sending a notification to the user who received the invitation
+            Notification.objects.create(user=user, title='New Friend Request!', body=f'{request.user.username} sent you a friend request!', type='FC', hook_id=request.user.id).save()
+            
             return JsonResponse({'status': 'ok', 'message': 'Invite sent!'})
         else:
             return JsonResponse({'status': 'error', 'message': "Waiting for user's response."})
@@ -229,7 +232,8 @@ def add_post(request):
                 toWhoSendNotification = friend.to_user
             else:
                 toWhoSendNotification = friend.from_user
-            Notification.objects.create(user=toWhoSendNotification, title='New post!', body=f'{user.username} added a new post!', type='NP', hook_id=post.id)
+            Notification.objects.create(user=toWhoSendNotification, title='New post!', body=f'{user.username} added a new post!', type='NP', hook_id=post.id).save()
+            
 
 
         messages.success(request, 'Post added successfully')
@@ -254,6 +258,10 @@ def add_comment(request):
         comment = Comments(user=user, post=post, content=content)
         comment.save()
 
+        # Sending a notification to the author of the post
+        senderOfNotification = Notification.objects.create(user=post.author, title='New comment!', body=f'{user.username} commented on your post!', type='NC', hook_id=post.id)
+        senderOfNotification.save()
+
         messages.success(request, 'Comment added successfully')
         return redirect('home')
     
@@ -275,6 +283,8 @@ def get_more_comments(request, post_id, offset):
     ]
     return JsonResponse({'comments': comments_data})
 
+
+# Checking if user liked the post or not and returning the total number of likes and comments
 @decorators.login_required
 def toggle_like(request, post_id):
     post = get_object_or_404(Posts, pk=post_id)
@@ -291,6 +301,10 @@ def toggle_like(request, post_id):
         # If the like does not exist, create it (like)
         Likes.objects.create(user=user, post=post)
         liked = True
+
+        # Sending a notification to the author of the post that someone liked their post
+        senderOfNotification = Notification.objects.create(user=post.author, title='New like!', body=f'{user.username} liked your post!', type='NL', hook_id=post.id)
+        senderOfNotification.save()
 
     # Count the total number of likes for the post
     like_count = Likes.objects.filter(post=post).count()

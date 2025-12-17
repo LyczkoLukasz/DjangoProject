@@ -28,7 +28,7 @@ def getFriend(user, userProfilePK):
 
 @register.inclusion_tag('home/base/latest_notifications.html')
 def latest_notifications(user):
-    notifications = Notification.objects.filter(user=user).order_by('-created_at')[:4]
+    notifications = Notification.objects.filter(user=user, is_read=False).order_by('-created_at')[:5]
     return {'notifications': notifications}
 
 @register.inclusion_tag('home/base/banner.html')

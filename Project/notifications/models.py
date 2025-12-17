@@ -5,7 +5,6 @@ from django.utils.translation import gettext_lazy as _
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 
-# Create your models here.
 
 class Notification(models.Model):
     class NotificationType(models.TextChoices):
@@ -14,6 +13,8 @@ class Notification(models.Model):
         NEW_COMMENT = 'NC', _("New Comment")
         NEW_LIKE = 'NL', _("New Like")
         NEW_FRIENDSHIP_STATUS = 'FC', _("Friendship status changed")
+
+    #user is a user who will receive the notification
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')
     title = models.CharField(max_length=100)
     body = models.TextField()
@@ -31,20 +32,32 @@ class Notification(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-        # Wysyłanie powiadomienia do użytkownika w czasie rzeczywistym
+        # Sending notifications to user in real-time through Django layers - Web sockets
         channel_layer = get_channel_layer()
         async_to_sync(channel_layer.group_send)(
+    
             f'notifications_{self.user.id}',
             {
                 'type': 'send_notification',
                 'notification': {
+                    'id': self.id,
                     'title': self.title,
                     'body': self.body,
-                    'created_at': str(self.created_at),
+                    'type': self.type,
+                    'hook_id': self.hook_id,
+                    'created_at': self.created_at.strftime('%Y-%m-%d %H:%M:%S'),
                 }
             }
         )
     
     def getNumberOfUnreadNotifications(user_provided):
         return Notification.objects.filter(user=user_provided, is_read=False).count()
+    
+    
+    
+    def getTypesOfNotifications(notifications):
+        types = []
+        for notification in notifications:
+            types.append(notification.type)
+        return types
     
